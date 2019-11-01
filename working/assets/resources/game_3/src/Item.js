@@ -6,8 +6,6 @@ cc.Class({
             default: null,
             type: cc.Label
         },
-        tmplID: 0,
-        itemID: 0,
     },
 
     onLoad () {

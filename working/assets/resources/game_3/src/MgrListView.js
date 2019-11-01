@@ -1,6 +1,8 @@
 cc.Class({
     extends: cc.Component,
-
+    editor: CC_EDITOR && {
+        menu: 'slot/MgrListView(暂时不支持水平滚动)',
+    },
     properties: {
         itemName: {
             default: '',
@@ -9,6 +11,11 @@ cc.Class({
         itemTemplateList: {
             default:[],
             tooltip:"项列表模板",
+            type: cc.Node
+        },
+        errorTemplate: {
+            default: null,
+            tooltip:"错误模板",
             type: cc.Node
         },
         scrollView: {
@@ -61,9 +68,10 @@ cc.Class({
         for (let index = 0; index < data.length; index++) {
             let obj = data[index];
             let item = this.itemTemplateList[obj.itemIdx];
-            if(!item){
+            if(item == null){
                 cc.error('cannot find itemIdx:'+obj.itemIdx+'in itemTemplateList!');
-                break;
+                item = this.errorTemplate;
+                data[index].is_error = true;
             }
 
             data[index].sumSize = {width:item.width/2+width, height:item.height/2+height};
@@ -144,6 +152,9 @@ cc.Class({
     },
     getTemplateBuffer(index){
         let template = this.itemTemplateBuffer[index];
+        if(template == null){
+            return null;
+        }
         let item = template[0];
         if(item){
             this.itemTemplateBuffer[index].splice(0, 1);
@@ -240,12 +251,24 @@ cc.Class({
                     if(temp_item){
                         item = temp_item;
                     }else{
-                        item = cc.instantiate(this.itemTemplateList[itemIdx]);
+                        let temp_item= this.itemTemplateList[itemIdx];
+                        if(temp_item==null){
+                            temp_item = this.errorTemplate;
+                            data[index].is_error = true;
+                        }
+                        item = cc.instantiate(temp_item);
                         this.content.addChild(item);
                     }
                     data[index].item = item;
                     data[index].is_create = true;
-                    item.getComponent(this.itemName)['updateItem'+obj.itemIdx](data[index]);
+
+                    let item_model = item.getComponent(this.itemName);
+                    if(data[index].is_error){
+                        // 错误模板
+                        item_model.updateItemError(data[index]);
+                    }else{
+                        item_model['updateItem'+obj.itemIdx](data[index]);
+                    }
                 }
                 item.position = cc.v2(0, data[index].pos.y);
             }else{
@@ -281,6 +304,7 @@ cc.Class({
         // 新增列表
         // 删除对应
         // 刷新内容
+
 
         this.removeItemByIdx(0);
         this.refresh_pos();
@@ -342,12 +366,25 @@ cc.Class({
             }
         }
         if(data){
-            this.data = [].concat(data);
+            this.data = this.copy_deep(data);
         }else{
             this.data = [];
         }
         this.calculate_size();
         this.content.height = this.data_size.height;
         this.updateView();
+    },
+    copy_deep(obj){
+        let result = Array.isArray(obj) ? [] : {};
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if (typeof obj[key] === 'object' && obj[key]!==null) {
+                    result[key] = this.copy_deep(obj[key]);   //递归复制 
+                } else {
+                    result[key] = obj[key];
+                }
+            }
+        }
+        return result;
     },
 });

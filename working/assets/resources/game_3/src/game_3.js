@@ -17,11 +17,7 @@ cc.Class({
             tooltip:"ListView",
             type: cc.Node
         },
-        img_1: {
-            default:null,
-            tooltip:"img_1",
-            type: cc.Node
-        },
+        
     },
 
     // LIFE-CYCLE CALLBACKS:

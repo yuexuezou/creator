@@ -1,0 +1,118 @@
+
+dt_sjjm_jbfz.png
+size: 306,306
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dt_sjjm_jbfz/dt_sjjm_jbfz01
+  rotate: false
+  xy: 2, 154
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz03
+  rotate: false
+  xy: 78, 230
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz05
+  rotate: false
+  xy: 2, 78
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz07
+  rotate: false
+  xy: 78, 154
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz09
+  rotate: false
+  xy: 154, 230
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz11
+  rotate: false
+  xy: 2, 2
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz12
+  rotate: false
+  xy: 78, 78
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz14
+  rotate: false
+  xy: 154, 154
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz16
+  rotate: false
+  xy: 230, 230
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz18
+  rotate: false
+  xy: 78, 2
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz20
+  rotate: false
+  xy: 154, 78
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz22
+  rotate: false
+  xy: 230, 154
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz23
+  rotate: false
+  xy: 154, 2
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz25
+  rotate: false
+  xy: 230, 78
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz27
+  rotate: false
+  xy: 230, 2
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+dt_sjjm_jbfz/dt_sjjm_jbfz29
+  rotate: false
+  xy: 2, 230
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1

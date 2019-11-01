@@ -1,0 +1,69 @@
+
+b15.png
+size: 256,275
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fzdw_b14_beimao
+  rotate: false
+  xy: 163, 2
+  size: 70, 68
+  orig: 70, 68
+  offset: 0, 0
+  index: -1
+fzdw_b14_bj
+  rotate: false
+  xy: 2, 22
+  size: 159, 121
+  orig: 159, 121
+  offset: 0, 0
+  index: -1
+fzdw_b14_houmao
+  rotate: false
+  xy: 167, 158
+  size: 38, 40
+  orig: 38, 40
+  offset: 0, 0
+  index: -1
+fzdw_b14_shenti
+  rotate: false
+  xy: 167, 200
+  size: 87, 73
+  orig: 87, 73
+  offset: 0, 0
+  index: -1
+fzdw_b14_tou
+  rotate: true
+  xy: 163, 72
+  size: 71, 91
+  orig: 71, 91
+  offset: 0, 0
+  index: -1
+fzdw_b14_youer
+  rotate: true
+  xy: 2, 2
+  size: 18, 34
+  orig: 18, 34
+  offset: 0, 0
+  index: -1
+fzdw_b14_zuixia
+  rotate: false
+  xy: 207, 146
+  size: 23, 21
+  orig: 23, 21
+  offset: 0, 0
+  index: -1
+fzdw_b14_zuoer
+  rotate: true
+  xy: 207, 169
+  size: 29, 31
+  orig: 29, 31
+  offset: 0, 0
+  index: -1
+kuangs
+  rotate: false
+  xy: 2, 145
+  size: 163, 128
+  orig: 163, 128
+  offset: 0, 0
+  index: -1

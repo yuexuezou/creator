@@ -1,0 +1,440 @@
+
+b01.png
+size: 1710,1802
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mds_wnys_bgs_ani
+  rotate: false
+  xy: 2, 1519
+  size: 236, 281
+  orig: 236, 281
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani
+  rotate: false
+  xy: 2, 1289
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_02
+  rotate: false
+  xy: 240, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_03
+  rotate: false
+  xy: 2, 1059
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_04
+  rotate: false
+  xy: 450, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_05
+  rotate: false
+  xy: 2, 829
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_06
+  rotate: false
+  xy: 660, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_07
+  rotate: false
+  xy: 2, 599
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_08
+  rotate: false
+  xy: 870, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_09
+  rotate: false
+  xy: 2, 369
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_10
+  rotate: false
+  xy: 1080, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_11
+  rotate: false
+  xy: 2, 139
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_12
+  rotate: false
+  xy: 1290, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_13
+  rotate: false
+  xy: 1500, 1572
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_14
+  rotate: true
+  xy: 240, 1362
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_15
+  rotate: true
+  xy: 470, 1362
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_16
+  rotate: true
+  xy: 700, 1362
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_17
+  rotate: true
+  xy: 930, 1362
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_18
+  rotate: true
+  xy: 1160, 1362
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_19
+  rotate: true
+  xy: 1390, 1362
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_20
+  rotate: false
+  xy: 212, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_21
+  rotate: false
+  xy: 212, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_22
+  rotate: false
+  xy: 422, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_23
+  rotate: false
+  xy: 212, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_24
+  rotate: false
+  xy: 422, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_25
+  rotate: false
+  xy: 632, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_26
+  rotate: false
+  xy: 212, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_27
+  rotate: false
+  xy: 422, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_28
+  rotate: false
+  xy: 632, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_29
+  rotate: false
+  xy: 842, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_30
+  rotate: false
+  xy: 212, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_31
+  rotate: false
+  xy: 422, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_32
+  rotate: false
+  xy: 632, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_33
+  rotate: false
+  xy: 842, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_34
+  rotate: false
+  xy: 1052, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_35
+  rotate: false
+  xy: 422, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_36
+  rotate: false
+  xy: 632, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_37
+  rotate: false
+  xy: 842, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_38
+  rotate: false
+  xy: 1052, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_39
+  rotate: false
+  xy: 1262, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_40
+  rotate: false
+  xy: 632, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_41
+  rotate: false
+  xy: 842, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_42
+  rotate: false
+  xy: 1052, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_43
+  rotate: false
+  xy: 1262, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_44
+  rotate: false
+  xy: 842, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_45
+  rotate: false
+  xy: 1052, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_46
+  rotate: false
+  xy: 1262, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_47
+  rotate: false
+  xy: 1052, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_48
+  rotate: false
+  xy: 1262, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_49
+  rotate: false
+  xy: 1262, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_50
+  rotate: true
+  xy: 212, 2
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_51
+  rotate: true
+  xy: 442, 2
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_52
+  rotate: true
+  xy: 672, 2
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_53
+  rotate: true
+  xy: 902, 2
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_54
+  rotate: true
+  xy: 1132, 2
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_55
+  rotate: false
+  xy: 1472, 1132
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_56
+  rotate: false
+  xy: 1472, 902
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_57
+  rotate: false
+  xy: 1472, 672
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_58
+  rotate: false
+  xy: 1472, 442
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_59
+  rotate: false
+  xy: 1472, 212
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_csm_ani/mds_wnys_csm_ani_60
+  rotate: true
+  xy: 1362, 2
+  size: 208, 228
+  orig: 208, 228
+  offset: 0, 0
+  index: -1
+mds_wnys_zis_ani
+  rotate: false
+  xy: 2, 29
+  size: 208, 108
+  orig: 208, 108
+  offset: 0, 0
+  index: -1

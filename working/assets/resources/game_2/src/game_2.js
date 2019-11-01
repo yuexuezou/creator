@@ -17,6 +17,12 @@ cc.Class({
             tooltip:"线",
             type: cc.Node
         },
+        img_caljian: {
+            default:null,
+            tooltip:"img_caljian",
+            type: cc.Node
+        },
+        
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -128,6 +134,12 @@ cc.Class({
     start () {
         // this.add_box();
         // this.change_to_3d();
+
+
+        
+        this.img_caljian.getComponent(cc.Sprite).fillRange = 0.06;
+        cc.log("????????????", this.img_caljian.getComponent(cc.Sprite).fillRange);
+
     },
     // 添加线
     add_box(point){

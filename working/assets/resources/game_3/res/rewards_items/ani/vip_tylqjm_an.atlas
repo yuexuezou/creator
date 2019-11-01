@@ -1,0 +1,20 @@
+
+vip_tylqjm_an.png
+size: 298,68
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+vip_tylqjm_angl
+  rotate: false
+  xy: 2, 4
+  size: 228, 62
+  orig: 228, 62
+  offset: 0, 0
+  index: -1
+zxjl_btncollect_xx
+  rotate: false
+  xy: 232, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

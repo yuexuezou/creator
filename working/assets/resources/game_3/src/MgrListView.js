@@ -244,12 +244,16 @@ cc.Class({
             if(in_view){
                 let item = data[index].item;
                 if(data[index].is_create){
-                    // cc.log('已经创建的不需要改变');
+                    // cc.log('已经创建的', item.list_view_data_idx, index);
+                    item.list_view_data_idx = index;
+                    // let item_model = item.getComponent(this.itemName);
+                    // item_model['updateItem'+obj.itemIdx](data[index]);
                 }else{
                     let itemIdx = obj.itemIdx;
                     let temp_item = this.getTemplateBuffer(itemIdx);
                     if(temp_item){
                         item = temp_item;
+                        temp_item.active = true;
                     }else{
                         let temp_item= this.itemTemplateList[itemIdx];
                         if(temp_item==null){
@@ -261,7 +265,7 @@ cc.Class({
                     }
                     data[index].item = item;
                     data[index].is_create = true;
-
+                    item.list_view_data_idx = index;
                     let item_model = item.getComponent(this.itemName);
                     if(data[index].is_error){
                         // 错误模板
@@ -277,6 +281,7 @@ cc.Class({
                     data[index].is_create = null;
                     // 加入模板缓冲区
                     obj.item.stopAllActions();
+                    obj.item.list_view_data_idx = null;
                     this.addTemplateBuffer(obj.itemIdx, obj.item);
                 }
             }
@@ -317,7 +322,10 @@ cc.Class({
         }
         if(data.item){
             // 加入模板缓冲区
-            this.addTemplateBuffer(data.itemIdx, data.item);
+            // this.addTemplateBuffer(data.itemIdx, data.item);
+            if(data.item.list_view_data_idx == idx){
+                this.addTemplateBuffer(data.itemIdx, data.item);
+            }
         }
 
         this.data.splice(idx, 1);
@@ -350,7 +358,6 @@ cc.Class({
         }
         this.scrollView.scrollToOffset(cc.v2(0, move_y-this.start_spacing), time);
     },
-
     // 数据更新 (外部调用)
     // data=[];
     // data[0] = {itemIdx:0, data:'xxxx'};

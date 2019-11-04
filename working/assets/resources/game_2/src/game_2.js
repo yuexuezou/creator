@@ -137,8 +137,17 @@ cc.Class({
 
 
         
-        this.img_caljian.getComponent(cc.Sprite).fillRange = 0.06;
-        cc.log("????????????", this.img_caljian.getComponent(cc.Sprite).fillRange);
+        
+        // cc.log("????????????", this.img_caljian.getComponent(cc.Sprite).fillRange);
+        
+        
+        let delay = cc.delayTime(0.01);
+        let func = cc.callFunc(()=>{
+            // this.img_caljian.getComponent(cc.ProgressBar).progress = 0.065;
+            this.img_caljian.getComponent(cc.Sprite).fillRange = 0.065;
+        });
+        
+        this.node.runAction(cc.sequence(delay, func));
 
     },
     // 添加线

@@ -159,8 +159,7 @@ cc.Class({
         if(item){
             this.itemTemplateBuffer[index].splice(0, 1);
         }
-        // return item;
-        return null;
+        return item;
     },
     // 未使用缓冲区模板处理
     update_TemplateBuffer(){
@@ -181,6 +180,7 @@ cc.Class({
                 item.destroy();
             }
         }
+        this.initTemplateBuffer();
     },
     checkInView(position, width, height) { // get item position in scrollview's node space
         let worldPos = this.content.convertToWorldSpaceAR(position);
@@ -354,7 +354,7 @@ cc.Class({
     // 数据更新 (外部调用)
     // data=[];
     // data[0] = {itemIdx:0, data:'xxxx'};
-    upData(data){
+    upData(data, save_buffer){
         if(this.data){
             for (let index = 0; index < this.data.length; index++) {
                 let obj = this.data[index];
@@ -373,6 +373,9 @@ cc.Class({
         this.calculate_size();
         this.content.height = this.data_size.height;
         this.updateView();
+        if(save_buffer == null){
+            this.removeTemplateBuffer();
+        }
     },
     copy_deep(obj){
         let result = Array.isArray(obj) ? [] : {};

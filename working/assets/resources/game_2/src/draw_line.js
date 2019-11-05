@@ -335,12 +335,12 @@ cc.Class({
             Graphics.lineWidth = param.width;
             Graphics.strokeColor = param.color;
             Graphics.clear();
-            Graphics.moveTo(points[0].x-65, points[0].y);
+            Graphics.moveTo(-400, points[0].y);
             for (let index = 0; index < points.length; index++) {
                 let pos = points[index];
                 Graphics.lineTo(pos.x, pos.y);
             }
-            Graphics.lineTo(points[points.length-1].x+65, points[points.length-1].y);
+            Graphics.lineTo(400, points[points.length-1].y);
             Graphics.stroke();
         };
 

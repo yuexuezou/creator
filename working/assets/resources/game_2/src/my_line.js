@@ -415,7 +415,7 @@ cc.Class({
                 let row_indx = line_obj.row_indx;
                 let column_indx = line_obj.column_indx;
 
-                let line_add_x = 0;
+                let line_add_x = 0;//(max_count*3)/2 - curr_idx*3;
                 let line_add_y = (max_count*3)/2 - curr_idx*3;
                 pos.push({x:start_x+(column_indx-1)*add_x + line_add_x, y:start_y+(row_indx-1)*add_y + line_add_y});
             }

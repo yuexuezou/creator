@@ -1,0 +1,41 @@
+
+btnSpin.png
+size: 220,60
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+xcn_btnspin_lygl
+  rotate: true
+  xy: 2, 2
+  size: 56, 60
+  orig: 56, 60
+  offset: 0, 0
+  index: -1
+xcn_btnspin_zi
+  rotate: false
+  xy: 64, 24
+  size: 82, 34
+  orig: 82, 34
+  offset: 0, 0
+  index: -1
+xcn_btnspin_zi2
+  rotate: false
+  xy: 64, 7
+  size: 100, 15
+  orig: 100, 15
+  offset: 0, 0
+  index: -1
+xcn_btnspin_zigl
+  rotate: false
+  xy: 166, 9
+  size: 52, 28
+  orig: 52, 28
+  offset: 0, 0
+  index: -1
+xcn_btnspin_zigl2
+  rotate: false
+  xy: 148, 39
+  size: 61, 19
+  orig: 61, 19
+  offset: 0, 0
+  index: -1

@@ -28,9 +28,23 @@ export default class wheel_refresh extends cc.Component {
     })
     element_height: any = 150;
 
+    @property({
+        type: cc.Float,
+        tooltip:"元素个数（行数）",
+    })
+    element_num: any = 4;
+    // 滚轮列索引
+    item_idx:number = 0;
+
+    element_obj:any = {};   
+    element_data:any = {};
+    element_node_by_data:any = {};
+    first_element_idx:number = 0;
+    end_element_idx:number = 0;
+    wheel_is_stop:boolean = false;   //滚轮已经停止
+    is_auto_stop:boolean = false;    //滚轮自动停止（在停的路上）
 
     onLoad () {
-
     }
 
     start () {
@@ -39,9 +53,30 @@ export default class wheel_refresh extends cc.Component {
 
     refresh_view(){
         let y = this.wheel_act.node.y;
+        // 有几个不在视野了
+        let disappear_num = Math.floor(y/this.element_height);
+        // y坐标偏移
+        let offset_y = y-disappear_num*this.element_height;
+        this.first_element_idx = disappear_num;
+        for (let index = 1; index <= this.element_num + 3; index++) {
+            let element_idx = this.first_element_idx + index;
+
+
+        }
+
+        
+        // 0 1 2 3
+        // 0.1 0.5 1.1 1.5 2
+
+
+        
+
+        for (let index = 1; index <= this.element_num; index++) {
+
+        }
     }
 
     update (dt) {
-        this.refresh_view();
+        // this.refresh_view();
     }
 }

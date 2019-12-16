@@ -1,0 +1,31 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "speed_a_up",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.8333333333333334,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "y": [
+        {
+          "frame": 0,
+          "value": 0,
+          "curve": [
+            0.48,
+            0,
+            0.73,
+            0.71
+          ]
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": -1500
+        }
+      ]
+    }
+  },
+  "events": []
+}

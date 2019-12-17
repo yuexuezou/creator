@@ -20,10 +20,6 @@ export default class game_7 extends cc.Component {
 
     }
 
-    // 点击事件
-    click_ddddddddddddd () {
-        this.wheel_act.run_speed_down(cc.v2(0, 200));
-
-    }
+    
     // update (dt) {}
 }

@@ -156,7 +156,7 @@ export default class wheel_refresh extends cc.Component {
         element_node.y = set_y;
 
         let custom_zIndex = -1*index + this.item_idx*10;
-        cc.log("设置权重", offset_y, custom_zIndex, element_node.y);
+        // cc.log("设置权重", offset_y, custom_zIndex, element_node.y);
         // sysEvent.emit(slot.game.event_name+'set_zIndex', {node:element_node, name:'wheel', custom_zIndex:custom_zIndex});
     }
 
@@ -183,7 +183,7 @@ export default class wheel_refresh extends cc.Component {
             }else{
                 if(this.symbolWeight){
                     if(!this.itemSelect || !this.itemSelect.length){
-                        this.itemSelect = slot.math.randomHallSymbolWeight(this.symbolWeight);
+                        // this.itemSelect = slot.math.randomHallSymbolWeight(this.symbolWeight);
                     }
                     let item = this.itemSelect.shift();
                     id = item.id;
@@ -226,6 +226,7 @@ export default class wheel_refresh extends cc.Component {
 
     refresh_view(){
         let y = this.wheel_act.node.y;
+        
         if(this.last_set_y == y){
             return;
         }

@@ -3,9 +3,9 @@
   "_name": "speed_a_uniform",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 10,
   "sample": 60,
-  "speed": 0.2,
+  "speed": 0.5,
   "wrapMode": 1,
   "curveData": {
     "props": {
@@ -21,8 +21,8 @@
           ]
         },
         {
-          "frame": 2,
-          "value": 5600
+          "frame": 10,
+          "value": 30000
         }
       ]
     }

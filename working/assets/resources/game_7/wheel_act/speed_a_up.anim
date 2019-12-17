@@ -3,9 +3,9 @@
   "_name": "speed_a_up",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.8333333333333334,
+  "_duration": 1,
   "sample": 60,
-  "speed": 0.2,
+  "speed": 1,
   "wrapMode": 1,
   "curveData": {
     "props": {
@@ -13,11 +13,16 @@
         {
           "frame": 0,
           "value": 0,
-          "curve": "sineIn"
+          "curve": [
+            0.48,
+            0,
+            0.47299065420560743,
+            0.4705140186915888
+          ]
         },
         {
-          "frame": 0.8333333333333334,
-          "value": 1500
+          "frame": 1,
+          "value": 1800
         }
       ]
     }

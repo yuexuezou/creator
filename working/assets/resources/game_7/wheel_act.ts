@@ -63,11 +63,11 @@ export default class wheel_act extends cc.Component {
     // ----------------------------------------------
     // 动作事件
     onPlay(event_name, AnimationState?){
-        cc.log("onPlay", event_name, AnimationState.name);
+        // cc.log("onPlay", event_name, AnimationState.name);
     }
 
     onStop(event_name, AnimationState?){
-        cc.log("onStop", event_name, AnimationState.name);
+        // cc.log("onStop", event_name, AnimationState.name);
     }
 
     onFinished(event_name, AnimationState?){
@@ -86,11 +86,11 @@ export default class wheel_act extends cc.Component {
     }
 
     onPause(event_name, AnimationState?){
-        cc.log("onPause", event_name, AnimationState.name);
+        // cc.log("onPause", event_name, AnimationState.name);
     }
 
     onResume(event_name, AnimationState?){
-        cc.log("onResume", event_name, AnimationState.name);
+        // cc.log("onResume", event_name, AnimationState.name);
     }
 
     // ----------------------------------------------
@@ -107,7 +107,6 @@ export default class wheel_act extends cc.Component {
 
     speed_a_uniform(){
         let animation = this.node.getComponent(cc.Animation);
-        animation.stop();
         let animState = animation.getAnimationState('speed_a_uniform');
         let values = this.animStateData['speed_a_uniform'];
         animState.curves[0].values[0] = this.node.y + values[0];
@@ -156,6 +155,16 @@ export default class wheel_act extends cc.Component {
 
     test_3(){
         this.node.y = this.node.y + 1;
+    }
+
+    test_4(){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.pause();
+    }
+
+    test_5(){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.resume();
     }
 
     // ------------------------------------------------------------------------------

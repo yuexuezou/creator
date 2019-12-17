@@ -1,7 +1,6 @@
 // 滚轮动作
 
-
-const {ccclass, property} = cc._decorator;
+const {ccclass} = cc._decorator;
 
 @ccclass
 export default class wheel_act extends cc.Component {
@@ -10,12 +9,112 @@ export default class wheel_act extends cc.Component {
     // 停止回调
     end_call:Function;
 
+    animation: cc.Animation;
 
-    // onLoad () {}
+    // 动作原始数据
+    animStateData:{
+        speed_a_up:any;
+        speed_a_uniform:any;
+        speed_a_down:any;
+        stop_back:any;
+    };
 
-    start () {
+    copy_deep:Function;
+    onLoad () {
+        this.copy_deep = this.local_copy_deep;
+        let animation = this.node.getComponent(cc.Animation);
+        animation.on('play',      this.onPlay,        this);
+        animation.on('stop',      this.onStop,        this);
+        animation.on('finished',  this.onFinished,    this);
+        animation.on('pause',     this.onPause,       this);
+        animation.on('resume',    this.onResume,      this);
+        this.animation = animation;
+        this.init_data();
 
     }
+
+    // 存储动作基本数据数据
+    init_data(){
+        let animation = this.node.getComponent(cc.Animation);
+
+        let animStateData = this.animStateData;
+        for (const key in animStateData) {
+            let animState = animation.getAnimationState(key);
+            animStateData[key] = this.copy_deep(animState.curves[0].values);
+        }
+    }
+
+    // ----------------------------------------------
+    // 动作事件
+    onPlay(event_name, AnimationState?){
+        cc.log("onPlay", event_name, AnimationState.name);
+    }
+
+    onStop(event_name, AnimationState?){
+        cc.log("onStop", event_name, AnimationState.name);
+    }
+
+    onFinished(event_name, AnimationState?){
+        let act_name = AnimationState.name;
+        if(act_name == 'speed_a_up'){
+            this.speed_a_uniform();
+        }else if(act_name == 'speed_a_down'){
+            // 减速后
+            this.pre_end_call && this.pre_end_call();
+            this.stop_back();
+        }else if(act_name == 'stop_back'){
+            this.end_call && this.end_call();
+        }
+    }
+
+    onPause(event_name, AnimationState?){
+        cc.log("onPause", event_name, AnimationState.name);
+    }
+
+    onResume(event_name, AnimationState?){
+        cc.log("onResume", event_name, AnimationState.name);
+    }
+
+    // ----------------------------------------------
+    // 加速
+    speed_a_up(){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.stop();
+        let animState = animation.getAnimationState('speed_a_up');
+        animState.curves[0].values[0] = 0;
+        animState.curves[0].values[1] = 2000;
+        animation.play('speed_a_up');
+    }
+
+    speed_a_uniform(){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.stop();
+        let animState = animation.getAnimationState('speed_a_uniform');
+        animState.curves[0].values[0] = 0;
+        animState.curves[0].values[1] = 2000;
+        animation.play('speed_a_uniform');
+    }
+
+    speed_a_down(){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.stop();
+        let animState = animation.getAnimationState('speed_a_down');
+        animState.curves[0].values[0] = 0;
+        animState.curves[0].values[1] = 2000;
+        animation.play('speed_a_down');
+    }
+
+    stop_back(){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.stop();
+        let animState = animation.getAnimationState('stop_back');
+        animState.curves[0].values[0] = 0;
+        animState.curves[0].values[1] = 2000;
+        animation.play('stop_back');
+    }
+
+
+
 
     //加速
     run_speed_up () {
@@ -97,18 +196,32 @@ export default class wheel_act extends cc.Component {
 
     test_1(){
         let anim = this.node.getComponent(cc.Animation);
-        let animState = anim.getAnimationState('speed_a_down');
+        anim.stop();
+        let animState = anim.getAnimationState('speed_a_up');
         // animState.curves[0].types[0] = [0.2, 0.3, 0.5, 1.9];
 
         cc.log(animState.curves);
         // cc.log(animState.curves[0].types);
         // animState.curves[0].types[0] = [0.2, 0.3];//, 0.5, 1.9
-        // animState.curves[0].values[0] = new cc.Vec3(0,0,0);
-        // animState.curves[0].values[1] = new cc.Vec3(0,900,0);//{x: -400, y: 100, z: 0};
-        anim.play('speed_a_down');
 
-        cc.log(animState);
+        animState.curves[0].values[0] = 0;    //new cc.Vec3(0, 0, 0);
+        animState.curves[0].values[1] = 2000; //new cc.Vec3(0, 2000, 0);//{x: -400, y: 100, z: 0};
+        anim.play('speed_a_up');
+
+        // cc.log(animState);
         // animState.time = 0.9;
+
+        
+        // onPlay
+        // onPause
+        // onResume
+        // onStop
+        // onError
+        // play 播放动画。
+        // stop 停止动画播放。
+        // pause 暂停动画。
+        // resume 重新播放动画。
+        // step 执行一帧动画。
     }
 
     test_2(){
@@ -131,52 +244,19 @@ export default class wheel_act extends cc.Component {
         this.node.y = this.node.y + 5;
     }
 
-    // update(){
-    //     cc.log(this.node.x, this.node.y);
-    // }
-
-    /*
-        通过动作列表更新动作
-
-        开始滚动加速
-            时间
-            距离
-
-        切换匀速
-            时间
-            距离
-        开始停止减速
-            时间
-            距离
-
-        停止中断
-            时间
-            距离
-        加快旋转
-            时间
-            距离
-
-        无缝切换动作
-
-        获取对等的速度的时间
-        移动距离计算
-
-
-        怎么做的无缝 加减速
-            减速中点了加速（开始减速后被告知要加速）
-                以相同的速度曾速
-
-            加速中点了减速（不想看期待点了停止）
-
-            匀速中点了减速（正常停）
-
-            匀速中点了加速（正常加速）
-
-
-
-
-
-    */
-
-
+    // ------------------------------------------------------------------------------
+    // 工具方法
+    local_copy_deep(obj){
+        let result = Array.isArray(obj) ? [] : {};
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if (typeof obj[key] === 'object' && obj[key]!==null) {
+                    result[key] = this.local_copy_deep(obj[key]);   //递归复制 
+                } else {
+                    result[key] = obj[key];
+                }
+            }
+        }
+        return result;
+    }
 }

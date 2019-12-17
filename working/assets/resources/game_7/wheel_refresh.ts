@@ -1,5 +1,6 @@
 // 滚轮刷新（根据滚动动作刷新元素位置）
 import wheel_act from './wheel_act';
+
 const {ccclass, property} = cc._decorator;
 
 // 协议中的结果或权重数据

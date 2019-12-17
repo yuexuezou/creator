@@ -56,7 +56,7 @@ cc.Class({
                 console.log(element);
             }
         }
-
+        
 
     },
 

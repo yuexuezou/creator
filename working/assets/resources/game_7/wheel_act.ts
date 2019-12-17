@@ -103,12 +103,12 @@ export default class wheel_act extends cc.Component {
         cc.log(animState.curves);
         // cc.log(animState.curves[0].types);
         // animState.curves[0].types[0] = [0.2, 0.3];//, 0.5, 1.9
-        animState.curves[0].values[0] = new cc.Vec3(0,100,0);
-        animState.curves[0].values[1] = new cc.Vec3(0,-900,0);//{x: -400, y: 100, z: 0};
+        // animState.curves[0].values[0] = new cc.Vec3(0,0,0);
+        // animState.curves[0].values[1] = new cc.Vec3(0,900,0);//{x: -400, y: 100, z: 0};
         anim.play('speed_a_down');
 
         cc.log(animState);
-        animState.time = 0.9;
+        // animState.time = 0.9;
     }
 
     test_2(){
@@ -120,12 +120,20 @@ export default class wheel_act extends cc.Component {
         // cc.log(animState.curves[0].types);
         // animState.curves[0].types[0] = [0.2, 0.3];//, 0.5, 1.9
         animState.curves[0].values[0] = new cc.Vec3(0,0,0);
-        animState.curves[0].values[1] = new cc.Vec3(0,-900,0);//{x: -400, y: 100, z: 0};
+        animState.curves[0].values[1] = new cc.Vec3(0,900,0);//{x: -400, y: 100, z: 0};
         anim.play('speed_a_down');
 
         cc.log(animState);
         animState.time = 0;
     }
+
+    test_3(){
+        this.node.y = this.node.y + 5;
+    }
+
+    // update(){
+    //     cc.log(this.node.x, this.node.y);
+    // }
 
     /*
         通过动作列表更新动作

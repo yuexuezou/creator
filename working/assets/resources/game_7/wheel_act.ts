@@ -33,20 +33,20 @@ export default class wheel_act extends cc.Component {
         this.animation = animation;
         this.init_data();
 
-        this.time = 0;
+        // this.time = 0;
     }
-    update(dt){
-        if(this.time != 0){
-            this.time = this.time + dt;
-            if(this.time >= 2){
-                this.time = 0;
-            }else{
-                return;
-            }
-        }
-        this.time = this.time + dt;
-        cc.log(this.node.y);
-    }
+    // update(dt){
+    //     if(this.time != 0){
+    //         this.time = this.time + dt;
+    //         if(this.time >= 2){
+    //             this.time = 0;
+    //         }else{
+    //             return;
+    //         }
+    //     }
+    //     this.time = this.time + dt;
+    //     cc.log(this.node.y);
+    // }
 
     // 存储动作基本数据数据
     init_data(){

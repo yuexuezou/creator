@@ -244,7 +244,7 @@ export default class wheel_refresh extends cc.Component {
         let element_obj = this.element_obj;
         for (const key in element_obj) {
             let key_idx = parseInt(key);
-            if(this.first_element_idx > key_idx || key_idx > (this.first_element_idx + this.element_num + 3)){
+            if(this.first_element_idx > key_idx || key_idx > (this.first_element_idx - 1 + this.element_num + 3)){
                 if(this.element_obj[key] != null){
                     this.add_cache_element(this.element_obj[key].element_node);
                     delete this.element_obj[key];

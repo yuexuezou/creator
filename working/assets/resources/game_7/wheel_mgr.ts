@@ -5,10 +5,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class wheel_mgr extends cc.Component {
     @property({
-        type: wheel_refresh,
+        type: [wheel_refresh],
         tooltip:"滚轮动作",
     })
-    wheel_refresh: wheel_refresh[] = null;
+    wheel_refresh: wheel_refresh[] = [];;
 
     onLoad () {
 

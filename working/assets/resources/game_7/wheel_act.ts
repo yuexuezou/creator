@@ -181,7 +181,6 @@ export default class wheel_act extends cc.Component {
     }
 
     test_1(){
-        // this.speed_a_wholeup();
         // this.speed_a_whole();
         this.speed_up_a();
     }

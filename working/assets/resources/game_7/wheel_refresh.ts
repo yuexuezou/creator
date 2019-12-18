@@ -55,7 +55,7 @@ export default class wheel_refresh extends cc.Component {
     wheel_is_stop:boolean = false;   //滚轮已经停止
     is_auto_stop:boolean = false;    //滚轮自动停止（在停的路上）
     cache_element_data:any = {};     //缓存数据
-    symbolWeight:any = null;  //单列权重
+    symbolWeight:any = null;  //单列权重（没有设置权重使用本地数据）
 
     cb_custom_element_by_id:Function = null;
     itemSelect: any;

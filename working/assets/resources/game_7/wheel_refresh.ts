@@ -1,17 +1,8 @@
 // 滚轮刷新（根据滚动动作刷新元素位置）
 import wheel_act from './wheel_act';
+import wheel_element from './wheel_element';
 
 const {ccclass, property} = cc._decorator;
-
-// 协议中的结果或权重数据
-interface result_obj {
-    id:number,
-    type?:number,
-    ext?:number,
-    weight?:number,
-    weightRepeated?:number,
-}
-
 
 @ccclass
 export default class wheel_refresh extends cc.Component {
@@ -22,16 +13,10 @@ export default class wheel_refresh extends cc.Component {
     wheel_act: wheel_act = null;
 
     @property({
-        type: cc.Node,
-        tooltip:"元素添加节点",
+        type: wheel_element,
+        tooltip:"滚轮元素",
     })
-    panel_element_parent: cc.Node = null;
-
-    @property({
-        type: cc.Node,
-        tooltip:"元素模板",
-    })
-    template_element: cc.Node = null;
+    wheel_element: wheel_element = null;
 
     @property({
         type: cc.Float,
@@ -54,7 +39,7 @@ export default class wheel_refresh extends cc.Component {
     end_element_idx:number = 0;
     wheel_is_stop:boolean = false;   //滚轮已经停止
     is_auto_stop:boolean = false;    //滚轮自动停止（在停的路上）
-    cache_element_data:any = {};     //缓存数据
+    // cache_element_data:any = {};     //缓存数据
     symbolWeight:any = null;  //单列权重（没有设置权重使用本地数据）
 
     cb_custom_element_by_id:Function = null;
@@ -63,7 +48,7 @@ export default class wheel_refresh extends cc.Component {
     last_set_y: number;
     onLoad () {
         let pos1 = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
-        let pos2 = this.panel_element_parent.convertToNodeSpaceAR(pos1);
+        let pos2 = this.wheel_element.panel_element_parent.convertToNodeSpaceAR(pos1);
         this.base_parent_pos = pos2;
     }
 
@@ -71,81 +56,28 @@ export default class wheel_refresh extends cc.Component {
         this.refresh_view();
     }
 
-    // 缓存元素------------------------------------------------------------------------------
-    add_cache_element(node:any){
-        let id = node.__custom_element_id;
-        if(id == null){
-            cc.error('id == null');
-            return;
-        }
-        if(this.cache_element_data[id] == null){
-            let obj = {
-                allots_id:1,   //分配器id
-                element_node_list:{},   //可用列表
-                use_id:1,   //可用id
-            };
-            this.cache_element_data[id] = obj;
-        }
-        let cache_obj = this.cache_element_data[id];
-        node.active = false;
-        cache_obj.element_node_list[cache_obj.allots_id] = node;
-        cache_obj.allots_id = cache_obj.allots_id + 1;
-    }
-
-    // 缓存元素
-    get_cache_element(id:number){
-        if(this.cache_element_data[id] == null){
-            return null;
-        }
-
-        let cache_obj = this.cache_element_data[id];
-        let element_node = cache_obj.element_node_list[cache_obj.use_id];
-        if( element_node == null){
-            return null;
-        }
-
-        delete cache_obj.element_node_list[cache_obj.use_id];
-        element_node.active = true;
-        cache_obj.use_id = cache_obj.use_id + 1;
-        return element_node;
-    }
-    // 缓存元素------------------------------------------------------------------------------
-
-    create_element_select(result_obj:result_obj){
-        if(this.cb_custom_element_by_id){
-            return this.cb_custom_element_by_id(result_obj);
+    // 随机结果
+    getRandomObj(){
+        if(this.symbolWeight){
+            if(!this.itemSelect || !this.itemSelect.length){
+                // this.itemSelect = slot.math.randomHallSymbolWeight(this.symbolWeight);
+            }
+            let item = this.itemSelect.shift();
+            return item;
         }else{
-            return this.create_element_by_id(result_obj);
+            let template_element_num = this.wheel_element.template_element.children.length;
+            // 设置一个随机1到N的变量。  除掉最后一个错误元素
+            let id = Math.ceil(Math.random()*(template_element_num-1));
+            return {id:id};
         }
     }
 
-    // 创建元素
-    create_element_by_id(result_obj:result_obj, only_create?:boolean){
-        let id = result_obj.id;
-
-        if(only_create){
-            let element_node = cc.find('element_'+id, this.template_element);
-            return cc.instantiate(element_node);
-        }
-
-        let element_node = null;
-        element_node = this.get_cache_element(id);
-        if(element_node == null){
-            element_node = cc.find('element_'+id, this.template_element);
-        }else{
-            return element_node;
-        }
-
-        if(element_node == null){
-            cc.log('cc.find(element_+id, this.template_element) id:' + id);
-            element_node = cc.find('element_error', this.template_element);
-        }
-
-        let c_element_node = cc.instantiate(element_node);
-        c_element_node.name = 'element_node';
-        c_element_node.__custom_element_id = id;
-        c_element_node.parent = this.panel_element_parent;
-        return c_element_node;
+    // row_index 索引0开始
+    // result_idx 索引0开始
+    set_element_data(row_index, result_idx, result_obj){
+        let element_idx = this.element_num - row_index;
+        this.element_data[element_idx] = result_obj;
+        this.element_data[element_idx].result_idx = result_idx;
     }
 
     up_element_node(offset_y:any, element_node:cc.Node, index:number){
@@ -174,7 +106,7 @@ export default class wheel_refresh extends cc.Component {
         if(element_obj == null){
             if(element_data){
                 id = element_data.id;
-                element_node = this.create_element_select(element_data);
+                element_node = this.wheel_element.create_element_select(element_data);
                 if(element_data.result_idx){
                     this.element_node_by_data[element_data.result_idx] = element_node;
                 }
@@ -187,12 +119,12 @@ export default class wheel_refresh extends cc.Component {
                     }
                     let item = this.itemSelect.shift();
                     id = item.id;
-                    element_node = this.create_element_select(item);
+                    element_node = this.wheel_element.create_element_select(item);
                 }else{
-                    let template_element_num = this.template_element.children.length;
+                    let template_element_num = this.wheel_element.template_element.children.length;
                     // 设置一个随机1到N的变量。  除掉最后一个错误元素
                     id = Math.ceil(Math.random()*(template_element_num-1));
-                    element_node = this.create_element_select({id:id});
+                    element_node = this.wheel_element.create_element_select({id:id});
                 }
             }
             let obj = {
@@ -203,7 +135,7 @@ export default class wheel_refresh extends cc.Component {
         }else{
             if(element_data){
                 element_obj.element_node.destroy();
-                element_node = this.create_element_select(element_data);
+                element_node = this.wheel_element.create_element_select(element_data);
 
                 id = element_data.id;
                 if(element_data.result_idx){
@@ -246,7 +178,7 @@ export default class wheel_refresh extends cc.Component {
             let key_idx = parseInt(key);
             if(this.first_element_idx > key_idx || key_idx > (this.first_element_idx - 1 + this.element_num + 3)){
                 if(this.element_obj[key] != null){
-                    this.add_cache_element(this.element_obj[key].element_node);
+                    this.wheel_element.add_cache_element(this.element_obj[key].element_node);
                     delete this.element_obj[key];
                 }
             }
@@ -256,6 +188,4 @@ export default class wheel_refresh extends cc.Component {
     update (dt) {
         this.refresh_view();
     }
-
-
 }

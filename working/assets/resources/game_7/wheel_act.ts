@@ -5,9 +5,9 @@ const {ccclass} = cc._decorator;
 @ccclass
 export default class wheel_act extends cc.Component {
     // 结束前回调（播音效）
-    pre_end_call:Function;
+    cb_wheel_finish_pre:Function;
     // 停止回调
-    end_call:Function;
+    cb_wheel_finish:Function;
     // 动作停止回调
     finish_call:Function;
 
@@ -17,6 +17,7 @@ export default class wheel_act extends cc.Component {
     animStateData:object;
 
     copy_deep:Function;
+    wheel_index:number = 0;
     onLoad () {
         this.copy_deep = this.local_copy_deep;
         this.init_data();
@@ -150,34 +151,36 @@ export default class wheel_act extends cc.Component {
         let types = stateData.types;
 
         let obj = [];
-        obj[0] = types[2]*0.92;
-        obj[1] = types[2]*0.92;
-        obj[2] = types[2]*0.92;
-        obj[3] = types[3]*0.92;
+        obj[0] = types[1];
+        obj[1] = types[1];
+        obj[2] = types[2];
+        obj[3] = types[3];
         animState.curves[0].types[0] = obj;
-        animState.curves[0].values[0] = this.node.y;
+        
         // animState.curves[0].values[1] = this.node.y + values[1];
         
-        let end_y = this.node.y + 125*100;
+        let end_y = this.node.y + 125*10;
         // let end_y = this.node.y + values[1];
         
         let deff_y = end_y - this.node.y;
         let speed = values[1]/deff_y;
         // let speed = 0.6;
         
-
+        cc.log("???????", animState.time);
+        animState.curves[0].values[0] = this.node.y;
         animState.curves[0].values[1] = end_y;
         animState.play();
-        cc.log(speed, animState.duration, animState.duration/speed);
+        // animState.time = 0.1;
         animState.speed = speed;
+
+        let finish_time = animState.duration/speed;
+        this.delay_do(finish_time*0.8, ()=>{
+            this.cb_wheel_finish_pre && this.cb_wheel_finish_pre();
+        });
         this.finish_call = ()=>{
             this.finish_call = null;
-            this.end_call && this.end_call();
+            this.cb_wheel_finish && this.cb_wheel_finish();
         };
-
-        this.delay_do(animState.duration/speed, ()=>{
-            cc.log("finish");
-        });
     }
 
     test_1(){

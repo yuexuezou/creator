@@ -56,8 +56,13 @@ cc.Class({
                 console.log(element);
             }
         }
-        
 
+        let column_num = 5;
+        for (let index = 0; index < 20; index++) {
+            let row_idx = Math.floor(index/column_num);
+            let column_idx = index%column_num;
+            console.log(row_idx, column_idx);
+        }
     },
 
     // update (dt) {},

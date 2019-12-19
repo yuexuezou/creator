@@ -3,11 +3,11 @@
 const {ccclass} = cc._decorator;
 
 @ccclass
-export default class wheel_act extends cc.Component {
+export default class reel_act extends cc.Component {
     // 结束前回调（播音效）
-    cb_wheel_finish_pre:Function;
+    cb_reel_finish_pre:Function;
     // 停止回调
-    cb_wheel_finish:Function;
+    cb_reel_finish:Function;
     // 动作停止回调
     finish_call:Function;
 
@@ -17,7 +17,7 @@ export default class wheel_act extends cc.Component {
     animStateData:object;
 
     copy_deep:Function;
-    wheel_index:number = 0;
+    reel_index:number = 0;
     onLoad () {
         this.node.y = 0;
         this.copy_deep = this.local_copy_deep;
@@ -176,11 +176,11 @@ export default class wheel_act extends cc.Component {
 
         let finish_time = animState.duration/speed;
         this.delay_do(finish_time*0.8, ()=>{
-            this.cb_wheel_finish_pre && this.cb_wheel_finish_pre();
+            this.cb_reel_finish_pre && this.cb_reel_finish_pre();
         });
         this.finish_call = ()=>{
             this.finish_call = null;
-            this.cb_wheel_finish && this.cb_wheel_finish();
+            this.cb_reel_finish && this.cb_reel_finish();
         };
     }
 

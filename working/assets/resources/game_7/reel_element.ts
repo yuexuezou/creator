@@ -12,7 +12,7 @@ interface result_obj {
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class wheel_element extends cc.Component {
+export default class reel_element extends cc.Component {
     @property({
         type: cc.Node,
         tooltip:"元素模板",

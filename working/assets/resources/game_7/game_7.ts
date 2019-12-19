@@ -1,14 +1,14 @@
-import wheel_mgr from './wheel_mgr';
+import reel_mgr from './reel_mgr';
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class game_7 extends cc.Component {
     @property({
-        type: wheel_mgr,
+        type: reel_mgr,
         tooltip:"滚轮动作",
     })
-    wheel_mgr: wheel_mgr = null;
+    reel_mgr: reel_mgr = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -23,9 +23,33 @@ export default class game_7 extends cc.Component {
         //     {id:4},{id:4},{id:4},{id:4},{id:4},
         //     {id:7},{id:7},{id:7},{id:7},{id:7},
         // ];
-        this.wheel_mgr.setInitResult([{id:1},{id:2},{id:3},{id:4}]);
+        this.reel_mgr.setInitResult([{id:4},{id:3},{id:2},{id:1}]);
+        // cc.log(this.reel_mgr.getElementNode(0));
+        // cc.log(this.reel_mgr.getElementNode(1));
+        // cc.log(this.reel_mgr.getElementNode(2));
+        // cc.log(this.reel_mgr.getElementNode(3));
+        
+
     }
 
-    
+    reelStart(){
+        this.reel_mgr.reelStart();
+    }
+    reelAutoStop(){
+        this.reel_mgr.reelAutoStop();
+    }
+    reelStop(){
+        this.reel_mgr.reelStop();
+    }
+    increaseReelTime(){
+        this.reel_mgr.increaseReelTime();
+    }
+    reelPause(){
+        this.reel_mgr.reelPause();
+    }
+    reelResume(){
+        this.reel_mgr.reelResume();
+    }
+
     // update (dt) {}
 }

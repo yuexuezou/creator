@@ -1,22 +1,22 @@
 // 滚轮刷新（根据滚动动作刷新元素位置）
-import wheel_act from './wheel_act';
-import wheel_element from './wheel_element';
+import reel_act from './reel_act';
+import reel_element from './reel_element';
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class wheel_refresh extends cc.Component {
+export default class reel_refresh extends cc.Component {
     @property({
-        type: wheel_act,
+        type: reel_act,
         tooltip:"滚轮动作",
     })
-    wheel_act: wheel_act = null;
+    reel_act: reel_act = null;
 
     @property({
-        type: wheel_element,
+        type: reel_element,
         tooltip:"滚轮元素",
     })
-    wheel_element: wheel_element = null;
+    reel_element: reel_element = null;
 
     @property({
         type: cc.Float,
@@ -37,7 +37,7 @@ export default class wheel_refresh extends cc.Component {
     element_node_by_data:any = {};
     first_element_idx:number = 0;
     end_element_idx:number = 0;
-    wheel_is_stop:boolean = false;   //滚轮已经停止
+    reel_is_stop:boolean = false;   //滚轮已经停止
     is_auto_stop:boolean = false;    //滚轮自动停止（在停的路上）
     // cache_element_data:any = {};     //缓存数据
     symbolWeight:any = null;  //单列权重（没有设置权重使用本地数据）
@@ -46,9 +46,10 @@ export default class wheel_refresh extends cc.Component {
     itemSelect: any;
     base_parent_pos:cc.Vec2 = null;
     last_set_y: number;
+    lock_refresh:boolean = false;  //锁 （true：不再随着reel_act y值改变刷新）
     onLoad () {
         let pos1 = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
-        let pos2 = this.wheel_element.panel_element_parent.convertToNodeSpaceAR(pos1);
+        let pos2 = this.reel_element.panel_element_parent.convertToNodeSpaceAR(pos1);
         this.base_parent_pos = pos2;
     }
 
@@ -65,7 +66,7 @@ export default class wheel_refresh extends cc.Component {
             let item = this.itemSelect.shift();
             return item;
         }else{
-            let template_element_num = this.wheel_element.template_element.children.length;
+            let template_element_num = this.reel_element.template_element.children.length;
             // 设置一个随机1到N的变量。  除掉最后一个错误元素
             let id = Math.ceil(Math.random()*(template_element_num-1));
             return {id:id};
@@ -75,9 +76,46 @@ export default class wheel_refresh extends cc.Component {
     // row_index 索引0开始
     // result_idx 索引0开始
     set_element_data(row_index, result_idx, result_obj){
-        let element_idx = this.element_num - row_index;
+        let element_idx = this.element_num - row_index + 1;
         this.element_data[element_idx] = result_obj;
         this.element_data[element_idx].result_idx = result_idx;
+    }
+
+    getElementNode(result_idx){
+        let element_node = this.element_node_by_data[result_idx];
+        if(element_node){
+            return element_node;
+        }
+        cc.error(result_idx, 'element_node', element_node)
+        return null;
+    }
+
+    get_top_element_idx(before_y){
+        let y = this.reel_act.node.y;
+
+        // 有几个不在视野了
+        let disappear_num = Math.floor(y/this.element_height);
+        // y坐标偏移
+        let offset_y = y-disappear_num*this.element_height;
+        let first_element_idx = this.first_element_idx;
+
+        offset_y
+        before_y
+
+        // let element_node = this.element_obj[first_element_idx].element_node;
+        // while (element_node.y <= (-291 - 10)) {
+        //     first_element_idx = first_element_idx + 1;
+        //     let element_obj = this.element_obj[first_element_idx];
+        //     if(element_obj == null || element_obj.element_node == null){
+        //         cc.error(first_element_idx);
+        //         break;
+        //     }else{
+        //         element_node = element_obj.element_node;
+        //     }
+        // }
+        // // 最上边看不到的元素 改成实际元素
+        // // let top_element_idx = first_element_idx + this.row_num + 3;
+
     }
 
     up_element_node(offset_y:any, element_node:cc.Node, index:number){
@@ -89,7 +127,7 @@ export default class wheel_refresh extends cc.Component {
 
         let custom_zIndex = -1*index + this.item_idx*10;
         // cc.log("设置权重", offset_y, custom_zIndex, element_node.y);
-        // sysEvent.emit(slot.game.event_name+'set_zIndex', {node:element_node, name:'wheel', custom_zIndex:custom_zIndex});
+        // sysEvent.emit(slot.game.event_name+'set_zIndex', {node:element_node, name:'reel', custom_zIndex:custom_zIndex});
     }
 
     // 设置元素模板
@@ -106,7 +144,7 @@ export default class wheel_refresh extends cc.Component {
         if(element_obj == null){
             if(element_data){
                 id = element_data.id;
-                element_node = this.wheel_element.create_element_select(element_data);
+                element_node = this.reel_element.create_element_select(element_data);
                 if(element_data.result_idx){
                     this.element_node_by_data[element_data.result_idx] = element_node;
                 }
@@ -119,12 +157,12 @@ export default class wheel_refresh extends cc.Component {
                     }
                     let item = this.itemSelect.shift();
                     id = item.id;
-                    element_node = this.wheel_element.create_element_select(item);
+                    element_node = this.reel_element.create_element_select(item);
                 }else{
-                    let template_element_num = this.wheel_element.template_element.children.length;
+                    let template_element_num = this.reel_element.template_element.children.length;
                     // 设置一个随机1到N的变量。  除掉最后一个错误元素
                     id = Math.ceil(Math.random()*(template_element_num-1));
-                    element_node = this.wheel_element.create_element_select({id:id});
+                    element_node = this.reel_element.create_element_select({id:id});
                 }
             }
             let obj = {
@@ -135,7 +173,7 @@ export default class wheel_refresh extends cc.Component {
         }else{
             if(element_data){
                 element_obj.element_node.destroy();
-                element_node = this.wheel_element.create_element_select(element_data);
+                element_node = this.reel_element.create_element_select(element_data);
 
                 id = element_data.id;
                 if(element_data.result_idx){
@@ -157,7 +195,7 @@ export default class wheel_refresh extends cc.Component {
     }
 
     refresh_view(){
-        let y = this.wheel_act.node.y;
+        let y = this.reel_act.node.y;
         
         if(this.last_set_y == y){
             return;
@@ -178,7 +216,7 @@ export default class wheel_refresh extends cc.Component {
             let key_idx = parseInt(key);
             if(this.first_element_idx > key_idx || key_idx > (this.first_element_idx - 1 + this.element_num + 3)){
                 if(this.element_obj[key] != null){
-                    this.wheel_element.add_cache_element(this.element_obj[key].element_node);
+                    this.reel_element.add_cache_element(this.element_obj[key].element_node);
                     delete this.element_obj[key];
                 }
             }
@@ -186,6 +224,10 @@ export default class wheel_refresh extends cc.Component {
     }
 
     update (dt) {
+        if(this.lock_refresh){
+            return;
+        }
         this.refresh_view();
     }
+    
 }

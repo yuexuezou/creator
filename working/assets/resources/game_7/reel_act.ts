@@ -144,7 +144,7 @@ export default class reel_act extends cc.Component {
         }
     }
     // 减速+回弹
-    speed_down_a(){
+    speed_down_a(end_y?:any){
         let animation = this.node.getComponent(cc.Animation);
         let animState = animation.getAnimationState('speed_a_whole');
         let stateData = this.animStateData['speed_a_whole'];
@@ -157,22 +157,23 @@ export default class reel_act extends cc.Component {
         obj[2] = types[2];
         obj[3] = types[3];
         animState.curves[0].types[0] = obj;
-        
         // animState.curves[0].values[1] = this.node.y + values[1];
-        
-        let end_y = this.node.y + 125*10;
+
+        // let end_y = this.node.y + 125*10;
         // let end_y = this.node.y + values[1];
-        
+        if(end_y == null){
+            end_y = this.node.y + 125*10;
+        }
         let deff_y = end_y - this.node.y;
         let speed = values[1]/deff_y;
         // let speed = 0.6;
-        
         cc.log("???????", animState.time);
         animState.curves[0].values[0] = this.node.y;
         animState.curves[0].values[1] = end_y;
         animState.play();
         // animState.time = 0.1;
         animState.speed = speed;
+        // animState.speed = 0.2;
 
         let finish_time = animState.duration/speed;
         this.delay_do(finish_time*0.8, ()=>{

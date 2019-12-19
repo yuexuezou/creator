@@ -37,6 +37,7 @@ export default class reel_refresh extends cc.Component {
     element_node_by_data:any = {};
     first_element_idx:number = 0;
     end_element_idx:number = 0;
+    end_element_y:any = 0;
     reel_is_stop:boolean = false;   //滚轮已经停止
     is_auto_stop:boolean = false;    //滚轮自动停止（在停的路上）
     // cache_element_data:any = {};     //缓存数据
@@ -47,6 +48,7 @@ export default class reel_refresh extends cc.Component {
     base_parent_pos:cc.Vec2 = null;
     last_set_y: number;
     lock_refresh:boolean = false;  //锁 （true：不再随着reel_act y值改变刷新）
+    before_y: any = null;
     onLoad () {
         let pos1 = this.node.parent.convertToWorldSpaceAR(this.node.getPosition());
         let pos2 = this.reel_element.panel_element_parent.convertToNodeSpaceAR(pos1);
@@ -75,8 +77,8 @@ export default class reel_refresh extends cc.Component {
 
     // row_index 索引0开始
     // result_idx 索引0开始
-    set_element_data(row_index, result_idx, result_obj){
-        let element_idx = this.element_num - row_index + 1;
+    set_element_data(row_index, result_idx, result_obj, start_element_idx = 0){
+        let element_idx = start_element_idx + this.element_num - row_index + 1;
         this.element_data[element_idx] = result_obj;
         this.element_data[element_idx].result_idx = result_idx;
     }
@@ -97,24 +99,21 @@ export default class reel_refresh extends cc.Component {
         let disappear_num = Math.floor(y/this.element_height);
         // y坐标偏移
         let offset_y = y-disappear_num*this.element_height;
+
         let first_element_idx = this.first_element_idx;
-
-        offset_y
-        before_y
-
-        // let element_node = this.element_obj[first_element_idx].element_node;
-        // while (element_node.y <= (-291 - 10)) {
-        //     first_element_idx = first_element_idx + 1;
-        //     let element_obj = this.element_obj[first_element_idx];
-        //     if(element_obj == null || element_obj.element_node == null){
-        //         cc.error(first_element_idx);
-        //         break;
-        //     }else{
-        //         element_node = element_obj.element_node;
-        //     }
-        // }
-        // // 最上边看不到的元素 改成实际元素
-        // // let top_element_idx = first_element_idx + this.row_num + 3;
+        let top_element_idx = null;
+        if(before_y == null){
+            top_element_idx = first_element_idx + this.element_num + 20;
+            before_y =  (this.element_num + 3)*this.element_height - offset_y;
+        }else{
+            let need_num = Math.ceil((before_y - offset_y)/this.element_height);
+            before_y =  need_num*this.element_height - offset_y;
+            top_element_idx = first_element_idx + need_num;
+        }
+        this.end_element_idx = top_element_idx;
+        this.end_element_y = this.end_element_idx * this.element_height;
+        this.before_y = before_y;
+        return top_element_idx;
 
     }
 

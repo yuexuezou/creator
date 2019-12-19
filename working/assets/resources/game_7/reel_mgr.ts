@@ -74,8 +74,41 @@ export default class reel_mgr extends cc.Component {
         }
     }
 
-    prepare_stop(){
+    arrange_result(idx){
+        let result = this.result;
+        let reel_refresh_list = this.reel_refresh_list;
+        let column_num = reel_refresh_list.length;
+        for (let index = 0; index < result.length; index++) {
+            let result_obj = result[index];
+            let reel_refresh = reel_refresh_list[index];
+            let row_idx = Math.floor(index/column_num);
+            let column_idx = index%column_num;
+            if(idx == null || idx == column_idx){
+                if(reel_refresh == null){
+                    reel_refresh = reel_refresh_list[column_idx];
+                }
+                let top_element_idx = null;
+                if(column_idx == 0){
+                    top_element_idx = reel_refresh.get_top_element_idx(null);
+                }else{
+                    let before_refresh = reel_refresh_list[column_idx-1];
+                    top_element_idx = reel_refresh.get_top_element_idx(before_refresh.before_y);
+                }
 
+                reel_refresh.set_element_data(row_idx, index, result_obj, top_element_idx);
+            }
+        }
+        if(idx == null){
+            let reel_act_list = this.reel_act_list;
+            for (let index = 0; index < reel_act_list.length; index++) {
+
+                let reel_refresh = reel_refresh_list[index];
+                let reel_act = reel_act_list[index];
+                reel_act.speed_down_a(reel_refresh.end_element_y);
+            }
+        }else{
+
+        }
     }
 
     // 对外接口↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
@@ -131,14 +164,19 @@ export default class reel_mgr extends cc.Component {
     // result_idx 索引从0开始  0 - 20
     getElementNode(result_idx){
         let reel_refresh_list = this.reel_refresh_list;
-        let column_num = reel_refresh_list.length;
-        let column_idx = result_idx%column_num;
-        let reel_refresh = reel_refresh_list[column_idx];
-        return reel_refresh.getElementNode(result_idx);
+        let reel_refresh = reel_refresh_list[result_idx];
+        if(reel_refresh){
+            return reel_refresh.getElementNode(result_idx);
+        }else{
+            let column_num = reel_refresh_list.length;
+            let column_idx = result_idx%column_num;
+            let reel_refresh = reel_refresh_list[column_idx];
+            return reel_refresh.getElementNode(result_idx);
+        }
     }
 
     // 滚轮停止展示结果
-    setResult(result){
+    setResult(result:any){
         this.result = result;
     }
     // 开始滚动
@@ -154,19 +192,19 @@ export default class reel_mgr extends cc.Component {
         if(this.result == null){
             return;
         }
-        this.prepare_stop()
-        let reel_act_list = this.reel_act_list;
-        for (let index = 0; index < reel_act_list.length; index++) {
-            let reel_act = reel_act_list[index];
-            reel_act.speed_down_a();
-        }
+        // this.prepare_stop()
+        // let reel_act_list = this.reel_act_list;
+        // for (let index = 0; index < reel_act_list.length; index++) {
+        //     let reel_act = reel_act_list[index];
+        //     reel_act.speed_down_a();
+        // }
     }
     // 直接停止滚动
     reelStop(){
         if(this.result == null){
             return;
         }
-
+        this.arrange_result(null);
     }
     // 增加滚轮时间
     increaseReelTime(time=2){

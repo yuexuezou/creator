@@ -39,6 +39,7 @@ export default class game_7 extends cc.Component {
         this.reel_mgr.reelAutoStop();
     }
     reelStop(){
+        this.reel_mgr.setResult([{id:4},{id:3},{id:2},{id:1}]);
         this.reel_mgr.reelStop();
     }
     increaseReelTime(){

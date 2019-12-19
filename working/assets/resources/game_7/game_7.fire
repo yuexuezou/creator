@@ -168,7 +168,7 @@
       "array": [
         0,
         0,
-        491.9024293495612,
+        367.19477120460203,
         0,
         0,
         0,
@@ -648,7 +648,7 @@
       "__id__": 16
     },
     "element_height": 125,
-    "element_num": 2,
+    "element_num": 4,
     "_id": "04hniHOxpNEocEb6LMmKdc"
   },
   {
@@ -4289,7 +4289,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "panel_wheel_test",
+    "_name": "panel_reel_test",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -4527,7 +4527,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 94.49,
+      "width": 75.59,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -4578,8 +4578,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "wheelStart",
-    "_N$string": "wheelStart",
+    "_string": "reelStart",
+    "_N$string": "reelStart",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -4746,7 +4746,7 @@
     },
     "component": "",
     "_componentId": "32ce7+I5tZKQ5dEtouvVOWg",
-    "handler": "wheelStart",
+    "handler": "reelStart",
     "customEventData": ""
   },
   {
@@ -4909,7 +4909,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 134.54,
+      "width": 115.63,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -4960,8 +4960,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "wheelAutoStop",
-    "_N$string": "wheelAutoStop",
+    "_string": "reelAutoStop",
+    "_N$string": "reelAutoStop",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -5128,7 +5128,7 @@
     },
     "component": "",
     "_componentId": "32ce7+I5tZKQ5dEtouvVOWg",
-    "handler": "wheelAutoStop",
+    "handler": "reelAutoStop",
     "customEventData": ""
   },
   {
@@ -5291,7 +5291,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 93.4,
+      "width": 74.49,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -5342,8 +5342,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "wheelStop",
-    "_N$string": "wheelStop",
+    "_string": "reelStop",
+    "_N$string": "reelStop",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -5510,7 +5510,7 @@
     },
     "component": "",
     "_componentId": "32ce7+I5tZKQ5dEtouvVOWg",
-    "handler": "wheelStop",
+    "handler": "reelStop",
     "customEventData": ""
   },
   {
@@ -5673,7 +5673,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 175.99,
+      "width": 160.43,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -5724,8 +5724,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "increaseWheelTime",
-    "_N$string": "increaseWheelTime",
+    "_string": "increaseReelTime",
+    "_N$string": "increaseReelTime",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -5892,7 +5892,7 @@
     },
     "component": "",
     "_componentId": "32ce7+I5tZKQ5dEtouvVOWg",
-    "handler": "increaseWheelTime",
+    "handler": "increaseReelTime",
     "customEventData": ""
   },
   {
@@ -6055,7 +6055,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 108.96,
+      "width": 90.06,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -6106,8 +6106,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "wheelPause",
-    "_N$string": "wheelPause",
+    "_string": "reelPause",
+    "_N$string": "reelPause",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -6274,7 +6274,7 @@
     },
     "component": "",
     "_componentId": "32ce7+I5tZKQ5dEtouvVOWg",
-    "handler": "wheelPause",
+    "handler": "reelPause",
     "customEventData": ""
   },
   {
@@ -6437,7 +6437,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 126.73,
+      "width": 107.82,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -6488,8 +6488,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "wheelResume",
-    "_N$string": "wheelResume",
+    "_string": "reelResume",
+    "_N$string": "reelResume",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -6656,7 +6656,7 @@
     },
     "component": "",
     "_componentId": "32ce7+I5tZKQ5dEtouvVOWg",
-    "handler": "wheelResume",
+    "handler": "reelResume",
     "customEventData": ""
   },
   {
@@ -6870,8 +6870,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "button",
-    "_N$string": "button",
+    "_string": "+1",
+    "_N$string": "+1",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,

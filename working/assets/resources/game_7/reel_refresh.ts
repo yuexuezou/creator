@@ -56,7 +56,7 @@ export default class reel_refresh extends cc.Component {
     }
 
     start () {
-        this.refresh_view();
+        
     }
 
     // 随机结果
@@ -93,28 +93,53 @@ export default class reel_refresh extends cc.Component {
     }
 
     get_top_element_idx(before_y){
-        let y = this.reel_act.node.y;
+        // let y = this.reel_act.node.y;
 
-        // 有几个不在视野了
-        let disappear_num = Math.floor(y/this.element_height);
-        // y坐标偏移
-        let offset_y = y-disappear_num*this.element_height;
+        // // 有几个不在视野了
+        // let disappear_num = Math.floor(y/this.element_height);
+        // // y坐标偏移
+        // let offset_y = y-disappear_num*this.element_height;
 
+        // let first_element_idx = this.first_element_idx;
+        // let top_element_idx = null;
+        // // if(before_y == null){
+        //     top_element_idx = first_element_idx + this.element_num + 20;
+        //     before_y =  (this.element_num + 3)*this.element_height - offset_y;
+        // // }else{
+        // //     let need_num = Math.ceil((before_y - offset_y)/this.element_height);
+        // //     before_y =  need_num*this.element_height - offset_y;
+        // //     top_element_idx = first_element_idx + this.element_num + 20 + need_num;
+        // // }
+        // this.end_element_idx = top_element_idx;
+        // this.end_element_y = this.end_element_idx * this.element_height;
+        // this.before_y = before_y;
+        // return top_element_idx;
+
+       
+        // let set_y =  (index-1)*this.element_height - offset_y;
+        // set_y = set_y + this.base_parent_pos.y;
         let first_element_idx = this.first_element_idx;
-        let top_element_idx = null;
-        if(before_y == null){
-            top_element_idx = first_element_idx + this.element_num + 20;
-            before_y =  (this.element_num + 3)*this.element_height - offset_y;
-        }else{
-            let need_num = Math.ceil((before_y - offset_y)/this.element_height);
-            before_y =  need_num*this.element_height - offset_y;
-            top_element_idx = first_element_idx + need_num;
+        let element_node = this.element_obj[first_element_idx].element_node;
+        let element_y = element_node.y - this.base_parent_pos.y;
+
+        while (element_y <= 0) {
+            first_element_idx = first_element_idx + 1;
+            let element_obj = this.element_obj[first_element_idx];
+            if(element_obj == null || element_obj.element_node == null){
+                cc.error(first_element_idx);
+                break;
+            }else{
+                element_node = element_obj.element_node;
+                element_y = element_node.y - this.base_parent_pos.y;
+            }
         }
+        // 最上边看不到的元素 改成实际元素
+        let top_element_idx = first_element_idx + this.element_num + 3 + 30;
+
         this.end_element_idx = top_element_idx;
         this.end_element_y = this.end_element_idx * this.element_height;
         this.before_y = before_y;
         return top_element_idx;
-
     }
 
     up_element_node(offset_y:any, element_node:cc.Node, index:number){

@@ -43,11 +43,13 @@ export default class reel_mgr extends cc.Component {
     cb_custom_element_by_id:Function = null;
     result: any;
 
-    // onLoad () {
-    // }
+    onLoad () {
+        this.init_reel_element();
+        this.init_reel_act();
+    }
 
     // start () {
-
+        
     // }
 
     init_reel_element(){
@@ -98,17 +100,17 @@ export default class reel_mgr extends cc.Component {
                 reel_refresh.set_element_data(row_idx, index, result_obj, top_element_idx);
             }
         }
-        if(idx == null){
-            let reel_act_list = this.reel_act_list;
-            for (let index = 0; index < reel_act_list.length; index++) {
+        // if(idx == null){
+        //     let reel_act_list = this.reel_act_list;
+        //     for (let index = 0; index < reel_act_list.length; index++) {
 
-                let reel_refresh = reel_refresh_list[index];
-                let reel_act = reel_act_list[index];
-                reel_act.speed_down_a(reel_refresh.end_element_y);
-            }
-        }else{
+        //         let reel_refresh = reel_refresh_list[index];
+        //         let reel_act = reel_act_list[index];
+        //         reel_act.speed_down_a(reel_refresh.end_element_y);
+        //     }
+        // }else{
 
-        }
+        // }
     }
 
     // 对外接口↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
@@ -120,10 +122,16 @@ export default class reel_mgr extends cc.Component {
     // 滚轮滚动随机权重
     setSymbolWeightList(symbolWeightList){
         let reel_refresh_list = this.reel_refresh_list;
+        let column_num = reel_refresh_list.length;
         for (let index = 0; index < reel_refresh_list.length; index++) {
             const reel_refresh = reel_refresh_list[index];
             let reel_index = reel_refresh.reel_act.reel_index;
-            reel_refresh.symbolWeight = symbolWeightList[reel_index];
+            let symbolWeight = symbolWeightList[reel_index];
+            let column_idx = reel_index%column_num;
+            if(symbolWeight == null){
+                symbolWeight = symbolWeightList[column_idx];
+            }
+            reel_refresh.symbolWeight = symbolWeight.symbolWeight;
         }
     }
 
@@ -156,7 +164,7 @@ export default class reel_mgr extends cc.Component {
         }
 
         for (let index = 0; index < reel_refresh_list.length; index++) {
-            const reel_refresh = reel_refresh_list[index];
+            let reel_refresh = reel_refresh_list[index];
             reel_refresh.refresh_view();
         }
     }
@@ -192,19 +200,36 @@ export default class reel_mgr extends cc.Component {
         if(this.result == null){
             return;
         }
-        // this.prepare_stop()
-        // let reel_act_list = this.reel_act_list;
-        // for (let index = 0; index < reel_act_list.length; index++) {
-        //     let reel_act = reel_act_list[index];
-        //     reel_act.speed_down_a();
-        // }
+
+        let reel_refresh_list = this.reel_refresh_list;
+        let reel_act_list = this.reel_act_list;
+        for (let index = 0; index < reel_act_list.length; index++) {
+            let reel_act = reel_act_list[index];
+            reel_act.delay_do(0.65 + (index-1) * 0.45, ()=>{
+                this.arrange_result(null);
+                let reel_refresh = reel_refresh_list[index];
+                reel_act.speed_down_a(reel_refresh.end_element_y);
+            })
+        }
     }
     // 直接停止滚动
-    reelStop(){
+    reelStop(auto_flag:boolean){
         if(this.result == null){
             return;
         }
+        if(auto_flag){
+            this.reelAutoStop();
+            return;
+        }
         this.arrange_result(null);
+        let reel_refresh_list = this.reel_refresh_list;
+        let reel_act_list = this.reel_act_list;
+        for (let index = 0; index < reel_act_list.length; index++) {
+            let reel_refresh = reel_refresh_list[index];
+            let reel_act = reel_act_list[index];
+            cc.log(reel_refresh.end_element_y, "reel_refresh.end_element_y")
+            reel_act.speed_down_a(reel_refresh.end_element_y);
+        }
     }
     // 增加滚轮时间
     increaseReelTime(time=2){

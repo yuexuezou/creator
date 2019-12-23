@@ -60,8 +60,12 @@ export default class reel_act extends cc.Component {
                 types:this.copy_deep(animState.curves[0].types[0]),
             }
             animStateData[clip.name] = obj;
+            cc.log(animState);
         }
         cc.log(this.animStateData);
+        cc.log("1111111111111111111111111");
+        cc.log(animation);
+        
     }
 
     // 延迟执行
@@ -167,9 +171,14 @@ export default class reel_act extends cc.Component {
         let deff_y = end_y - this.node.y;
         let speed = values[1]/deff_y;
         // let speed = 0.6;
-        cc.log("???????", animState.time);
-        animState.curves[0].values[0] = this.node.y;
-        animState.curves[0].values[1] = end_y;
+        cc.log("???????", animState);
+        cc.log("1111111", animState.clip.curveData.props.y[1]);
+        animState.duration = 5;
+        animState.clip.curveData.props.y[1] = {frame: 1, value: 100};
+        // {frame: 1, value: 4250}
+
+        // animState.curves[0].values[0] = this.node.y;
+        // animState.curves[0].values[1] = end_y;
         animState.play();
         // animState.time = 0.1;
         animState.speed = speed;

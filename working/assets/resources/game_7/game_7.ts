@@ -30,7 +30,13 @@ export default class game_7 extends cc.Component {
         //     {id:4},{id:4},{id:4},{id:4},{id:4},
         //     {id:7},{id:7},{id:7},{id:7},{id:7},
         // ];
-        this.reel_mgr.setInitResult([{id:4},{id:3},{id:2},{id:1}]);
+        let result = [
+            {id:13},{id:13},{id:13},{id:13},{id:13},
+            {id:5},{id:5},{id:5},{id:5},{id:5},
+            {id:4},{id:4},{id:4},{id:4},{id:4},
+            {id:7},{id:7},{id:7},{id:7},{id:7},
+        ];
+        this.reel_mgr.setInitResult(result);
         // cc.log(this.reel_mgr.getElementNode(0));
         // cc.log(this.reel_mgr.getElementNode(1));
         // cc.log(this.reel_mgr.getElementNode(2));
@@ -43,11 +49,25 @@ export default class game_7 extends cc.Component {
         this.reel_mgr.reelStart();
     }
     reelAutoStop(){
-        this.reel_mgr.reelAutoStop();
+        let result = [
+            {id:1},{id:2},{id:3},{id:4},{id:5},
+            {id:2},{id:3},{id:4},{id:5},{id:1},
+            {id:3},{id:4},{id:5},{id:1},{id:2},
+            {id:4},{id:5},{id:1},{id:2},{id:3},
+        ];
+        this.reel_mgr.setResult(result);
+        // this.reel_mgr.reelAutoStop();
+        this.reel_mgr.reelStop(true);
     }
     reelStop(){
-        this.reel_mgr.setResult([{id:4},{id:3},{id:2},{id:1}]);
-        this.reel_mgr.reelStop();
+        let result = [
+            {id:1},{id:2},{id:3},{id:4},{id:5},
+            {id:2},{id:3},{id:4},{id:5},{id:1},
+            {id:3},{id:4},{id:5},{id:1},{id:2},
+            {id:4},{id:5},{id:1},{id:2},{id:3},
+        ];
+        this.reel_mgr.setResult(result);
+        this.reel_mgr.reelStop(false);
     }
     increaseReelTime(){
         this.reel_mgr.increaseReelTime();

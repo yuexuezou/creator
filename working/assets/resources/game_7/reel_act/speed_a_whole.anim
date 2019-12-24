@@ -3,8 +3,8 @@
   "_name": "speed_a_whole",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1,
-  "sample": 60,
+  "_duration": 6,
+  "sample": 10,
   "speed": 1,
   "wrapMode": 1,
   "curveData": {
@@ -16,13 +16,13 @@
           "curve": [
             0.48,
             0,
-            0.7007572337369179,
-            1.2081530884465421
+            0.7347862718494406,
+            1.3140212070188348
           ]
         },
         {
-          "frame": 1,
-          "value": 500
+          "frame": 6,
+          "value": 2000
         }
       ]
     }

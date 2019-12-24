@@ -3,8 +3,8 @@
   "_name": "speed_b_whole",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1,
-  "sample": 60,
+  "_duration": 6,
+  "sample": 10,
   "speed": 1,
   "wrapMode": 1,
   "curveData": {
@@ -21,8 +21,8 @@
           ]
         },
         {
-          "frame": 1,
-          "value": 4250
+          "frame": 6,
+          "value": 3000
         }
       ]
     }

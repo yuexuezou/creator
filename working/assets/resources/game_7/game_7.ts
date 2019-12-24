@@ -15,6 +15,12 @@ export default class game_7 extends cc.Component {
         tooltip:"img_test",
     })
     img_test: cc.Node = null;
+
+    @property({
+        type: cc.Node,
+        tooltip:"img_test2",
+    })
+    img_test2: cc.Node = null;
     
 
     // LIFE-CYCLE CALLBACKS:
@@ -91,10 +97,91 @@ export default class game_7 extends cc.Component {
         // obj[2] = 1.8;
         // obj[3] = 0.7;
         // animState.curves[0].types[0] = obj;
+
+        // animState.curves[0].values[0] = 0;
+        // animState.curves[0].values[1] = 200;
+
+        // 获取当前播放的动画
+        let curAniClip = animation.currentClip;
+        // animState.duration = 0.5;
+		// 从第一帧开始播放动画
+        // animation.play('test_act', 0.51);
+        // this.img_test.y = 400;
+        // animation.play('test_act');
+        // 采样第一帧状态
+        
+        animation.sample('test_act');
+
+        // 停止播放，让状态停在第一帧。
+        cc.log(this.img_test.y, animState.time, "-----------------------");
+        
+        animation.stop();
+        animation.play('test_act');
+        animState.wrapMode = cc.WrapMode.Reverse;
+        animState.time = 0.5;
+        // animState.stop();
+        // animState.play();
+        this.test_act2();
+    }
+    test_act2(){
+        let animation = this.img_test2.getComponent(cc.Animation);
+        let animState = animation.getAnimationState('test_act');
+        cc.log(animation);
+        cc.log("-----------------------------------------------");
+        cc.log(animState);
+
+        // let obj = [];
+        // obj[0] = 0.5;
+        // obj[1] = 0.5;
+        // obj[2] = 1.8;
+        // obj[3] = 0.7;
+        // animState.curves[0].types[0] = obj;
+        // animState.curves[0].types[0][0] = 0;
+        // animState.curves[0].types[0][1] = 0;
+
+        // animState.curves[0].values[0] = 0;
+        // animState.curves[0].values[1] = 150;
+        // animState.duration = 0.5;
+        // animState.time = (5/10) * animState.duration;
+
+        // this.img_test2.y = this.img_test2.y - 216.6849111;
+        cc.log(animState.curves[0].serialize, "ok");
+        animState.curves[0].values[0] = this.img_test2.y - 216.6849111;
+        animState.curves[0].values[1] = this.img_test2.y + 500 - 216.6849111;
+        // 跳过坐标怎么算？
         animState.stop();
         animState.play();
+        // animState.time = 0.5;
+        // 该时间对应的Y值  216.6849111
+        animState.time = 0.433333333;
+
+        // animState.step();
+
+        // 每秒26帧是多少秒
+        // 26/60 = 0.433333333 秒
+
+        cc.log(this.img_test2.y);
+        // this.delay_do((5/10)*0.5, ()=>{
+        //     animState.stop();
+        // });
 
 
+    }
+    update(){
+        // cc.log(this.img_test2.y);
+    }
+    // 延迟执行
+    delay_do(time:number, call_func:Function){
+        let delay = cc.delayTime(time);
+        let call_1 = cc.callFunc(()=>{
+            call_func && call_func();
+        });
+        let seq1 = cc.sequence(delay, call_1);
+        this.node.runAction(seq1);
+    }
+
+    test_Bezier(){
+        
         let bezierPoint = this.create3DBezier(
             { x : 0,  y : 0,   z : 0 },    // p0
             { x : 0.48, y : 0, z : 0 },    // p1
@@ -106,7 +193,6 @@ export default class game_7 extends cc.Component {
         cc.log("bezierPoint");
         cc.log(bezierPoint);
     }
-
     /*
     * 生成四阶贝塞尔曲线定点数据
     * @param p0   起始点  { x : number, y : number, z : number }
@@ -168,3 +254,13 @@ export default class game_7 extends cc.Component {
     }
     // update (dt) {}
 }
+
+
+
+/*
+
+    怎么实现加速
+
+
+
+*/

@@ -98,8 +98,7 @@ export default class reel_act extends cc.Component {
             let config_y = {};
             let time_obj = {};
             for (const key in this.config_time) {
-                this.config_time[key] = this.config_time[key] * animState.duration;
-                let time = this.config_time[key];
+                let time = this.config_time[key] * animState.duration;
                 animation.play(clip.name, time);
                 // 采样
                 animation.sample(clip.name);
@@ -223,7 +222,6 @@ export default class reel_act extends cc.Component {
                 this.speed_uniform_a();
             });
             let seq = cc.sequence(move, call_func);
-            this.act_uniform_seq = seq;
             this.act_uniform = this.node.runAction(seq);
         }
     }
@@ -330,20 +328,67 @@ export default class reel_act extends cc.Component {
         animation.resume();
     }
 
-    test_6(){
+    // 加速
+    speed_up_b(){
+        cc.log("加速b");
+        this.act_state = act_state.speed_a_up;
+        this.uniform_node.stopAllActions();
         this.node.stopAllActions();
         let animation = this.node.getComponent(cc.Animation);
+        animation.stop();
         let animState = animation.getAnimationState('speed_b_whole');
         let stateData = this.animStateData['speed_b_whole'];
         let values = stateData.values;
-        
-
 
         animState.curves[0].values[0] = this.node.y;
         animState.curves[0].values[1] = this.node.y + values[1];
         animState.duration = stateData.duration;
         animState.wrapMode = cc.WrapMode.Normal;
         animation.play('speed_b_whole');
+        cc.log('匀速uniform', stateData.time_obj.uniform);
+        this.delay_do(this.uniform_node, stateData.time_obj.uniform, ()=>{
+            cc.log('匀速');
+            animation.stop();
+            this.speed_uniform_b();
+        });
+    }
+    
+    // 匀速
+    speed_uniform_b(run_time=100, move_y?, end_call?){
+        // cc.log("匀速");
+        let stateData = this.animStateData['speed_b_whole'];
+
+        let uniform_vt = (stateData.config_y.down - stateData.config_y.uniform)/(stateData.time_obj.down - stateData.time_obj.uniform);
+        if(move_y){
+            let time = move_y/uniform_vt;
+            // let move = cc.moveBy(time, cc.v2(0, move_y));
+            // let call_func = cc.callFunc(()=>{
+            //     end_call && end_call();
+            // });
+            // let seq = cc.sequence(move, call_func);
+            // this.act_uniform = this.node.runAction(seq);
+
+            // let seq = cc.sequence(move, call_func);
+            // this.act_uniform = this.node.runAction(seq);
+
+            this.delay_do(this.uniform_node, time, ()=>{
+                this.node.stopAllActions();
+                end_call && end_call();
+            });
+        }else{
+            let time = run_time;
+            let end_y = this.node.y + uniform_vt*time;
+            let move = cc.moveTo(time, cc.v2(0, end_y));
+            let call_func = cc.callFunc(()=>{
+                this.speed_uniform_b();
+            });
+            let seq = cc.sequence(move, call_func);
+            this.act_uniform = this.node.runAction(seq);
+        }
+    }
+
+    test_6(){
+        this.speed_up_b();
 
     }
 

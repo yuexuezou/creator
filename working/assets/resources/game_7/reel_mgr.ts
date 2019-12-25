@@ -205,7 +205,7 @@ export default class reel_mgr extends cc.Component {
         let reel_act_list = this.reel_act_list;
         for (let index = 0; index < reel_act_list.length; index++) {
             let reel_act = reel_act_list[index];
-            reel_act.delay_do(0.65 + (index-1) * 0.45, ()=>{
+            reel_act.delay_do(reel_act.timing_node, 0.65 + (index-1) * 0.45, ()=>{
                 this.arrange_result(null);
                 let reel_refresh = reel_refresh_list[index];
                 reel_act.speed_down_a(reel_refresh.end_element_y);
@@ -227,6 +227,7 @@ export default class reel_mgr extends cc.Component {
         for (let index = 0; index < reel_act_list.length; index++) {
             let reel_refresh = reel_refresh_list[index];
             let reel_act = reel_act_list[index];
+            reel_act.timing_node.stopAllActions();
             cc.log(reel_refresh.end_element_y, "reel_refresh.end_element_y")
             reel_act.speed_down_a(reel_refresh.end_element_y);
         }

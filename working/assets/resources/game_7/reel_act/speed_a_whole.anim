@@ -12,16 +12,15 @@
       "y": [
         {
           "frame": 0,
-          "value": 0,
-          "curve": "quadIn"
+          "value": 0
         },
         {
           "frame": 1,
-          "value": 2000
+          "value": 200
         },
         {
           "frame": 1.3333333333333333,
-          "value": 1900
+          "value": 50
         }
       ]
     }

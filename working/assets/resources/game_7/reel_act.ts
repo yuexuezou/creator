@@ -87,6 +87,7 @@ export default class reel_act extends cc.Component {
         for (let index = 0; index < clips.length; index++) {
             let clip = clips[index];
             let animState = animation.getAnimationState(clip.name);
+            cc.log(animState);
             // frame_data  帧数据
             // 0: {frame: 0, value: 0, curve: "quadIn"}
             // 1: {frame: 1, value: 2000}
@@ -100,7 +101,6 @@ export default class reel_act extends cc.Component {
         }
         cc.log(animStateData);
     }
-
     // 工具函数       ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
     create_node(name){
         if(this[name]){
@@ -134,6 +134,14 @@ export default class reel_act extends cc.Component {
     loaded: true
     sample: 60
     speed: 1
+
+    // 添加帧事件
+    clip.events.push({
+        frame: 1,               // 准确的时间，以秒为单位。这里表示将在动画播放到 1s 时触发事件
+        func: "frameEvent",     // 回调函数名称
+        params: [1, "hello"]    // 回调参数
+    });
+
 
 
 
@@ -194,7 +202,7 @@ export default class reel_act extends cc.Component {
             if(frame_obj1 == null){
                 cc.error('error frame_data:'+param.appoint_frame1);
             }
-            let frame_obj2 = frame_data[param.appoint_frame1];
+            let frame_obj2 = frame_data[param.appoint_frame2];
             if(frame_obj2 == null){
                 cc.error('error frame_data:'+param.appoint_frame2);
             }
@@ -202,12 +210,52 @@ export default class reel_act extends cc.Component {
             time2 = frame_obj2.frame;
         }
 
-        // this.node.y
-        // time1
-        // time1
+        let ago_y = this.node.y;
+        let set_values = [];
+        for (let index = 0; index < values.length; index++) {
+            if(index == 0){
+                let value = this.node.y;
+                set_values.push(value);
+            }else{
+                let value = set_values[0] + (values[index]-values[index-1]);
+                set_values.push(value);
+            }
+        }
+        animState.curves[0].values = set_values;
+        let sample_data1 = this.act_sample(appoint_act_name, time1);
+        let sample_data2 = this.act_sample(appoint_act_name, time2);
+        let deff_y = sample_data1.y - ago_y;
+        cc.log(sample_data1, time1, deff_y);
+        cc.log(sample_data2, time2);
+        
+        set_values = [];
+        for (let index = 0; index < values.length; index++) {
+            if(index == 0){
+                let value = ago_y - deff_y;
+                set_values.push(value);
+            }else{
+                let value = set_values[index-1]+(values[index]-values[index-1]);
+                set_values.push(value);
+            }
+        }
+        animState.curves[0].values = set_values;
 
-        // param.appoint_y                指定移动到的目标点
-        // param.appoint_act_name         指定动作名
+        let appoint_y = param.appoint_y;
+        let start_y = 0;
+        let end_y = values[frame_data.length-1];
+        let set_duration = duration;
+        let time = time1;
+        // let set_values = [];
+        // for (let index = 0; index < values.length; index++) {
+        //     let value = values[index];
+        //     set_values.push(value);
+        // }
+        // animState.curves[0].values = set_values;
+        animState.duration = set_duration;
+        animation.play(appoint_act_name, time);
+        // animState.time = time;
+
+        cc.log(animation);
 
         // if(){
 
@@ -220,9 +268,34 @@ export default class reel_act extends cc.Component {
         // 计算结束坐标y（对应最后一帧的坐标y）
         // 播放动作（根据动作名）
         // 修改时间appoint_time1
-        // 添加帧事件
-        // 1个动画就加一个帧事件
 
+    }
+    // 采样
+    act_sample(act_name, time){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.play(act_name, time);
+        animation.sample(act_name);
+        let data = {
+            y:this.node.y,
+        };
+        animation.stop();
+        return data;
+    }
+    // 帧事件
+    frameEvent(aaa, vvv){
+        cc.log("出发帧事件");
+        cc.log(aaa, vvv);
+    }
+
+    final_test(){
+        cc.log("终极测试");
+        let param = {
+            type:1,
+            appoint_frame1:0,
+            appoint_frame2:0.5,
+            appoint_act_name:'speed_a_whole',
+        };
+        this.do_appoint_act(param);
     }
 
     // 加速

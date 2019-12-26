@@ -253,7 +253,9 @@ export default class reel_act extends cc.Component {
         // animState.curves[0].values = set_values;
         animState.duration = set_duration;
         animation.play(appoint_act_name, time);
-        // animState.time = time;
+        this.delay_do(this.node, time2-time1, ()=>{
+            animation.stop();
+        })
 
         cc.log(animation);
 
@@ -291,6 +293,8 @@ export default class reel_act extends cc.Component {
         cc.log("终极测试");
         let param = {
             type:1,
+            appoint_time1:0,
+            appoint_time2:0.5,
             appoint_frame1:0,
             appoint_frame2:0.5,
             appoint_act_name:'speed_a_whole',

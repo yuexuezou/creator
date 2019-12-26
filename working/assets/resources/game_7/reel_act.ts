@@ -87,14 +87,14 @@ export default class reel_act extends cc.Component {
         for (let index = 0; index < clips.length; index++) {
             let clip = clips[index];
             let animState = animation.getAnimationState(clip.name);
-            // props_y
+            // frame_data  帧数据
             // 0: {frame: 0, value: 0, curve: "quadIn"}
             // 1: {frame: 1, value: 2000}
             // 2: {frame: 1.3333333333333333, value: 1900}
             let obj = {
                 values:this.copy_deep(animState.curves[0].values),
+                frame_data:this.copy_deep(animState.clip.curveData.props.y),
                 duration:animState.duration,
-                props_y:this.copy_deep(animState.clip.curveData.props.y),
             }
             animStateData[clip.name] = obj;
         }
@@ -120,11 +120,7 @@ export default class reel_act extends cc.Component {
         node.runAction(seq1);
     }
 
-    /* 
-
-
-
-
+    /*
     curveData:
     props:
     y: Array(3)
@@ -132,22 +128,34 @@ export default class reel_act extends cc.Component {
     1: {frame: 1, value: 2000}
     2: {frame: 1.3333333333333333, value: 1900}
     length: 3
-    __proto__: Array(0)
-    __proto__: Object
-    __proto__: Object
     duration: 1.3333333333333333
     events: []
     frameRate: 60
-    isValid: (...)
     loaded: true
-    name: (...)
-    nativeUrl: (...)
     sample: 60
     speed: 1
-    url: ""
-    wrapMode: 1
-    
+
+
+
+    let total_y = deff_y / ((stateData.duration-stateData.time_obj.down)/stateData.duration);
+    let scale_y = values[1]/total_y;
+
+    animState.curves[0].values[0] = this.node.y-(total_y-deff_y);
+    animState.curves[0].values[1] = end_y;
+    animState.duration = stateData.duration/scale_y;
+    animation.play('speed_b_whole');
+    animState.time = stateData.time_obj.down/scale_y;
+    let reel_sound_time = (stateData.duration/scale_y - stateData.time_obj.down/scale_y) * 0.8;
+    this.delay_do(this.delay_node, reel_sound_time, ()=>{
+        this.cb_reel_finish_pre && this.cb_reel_finish_pre();
+    });
+    this.finish_call = ()=>{
+        this.finish_call = null;
+        this.cb_reel_finish && this.cb_reel_finish();
+    };
     */
+
+
     // 工具函数       ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
     // param
     // type 1：按指定时间 2：按指定帧
@@ -158,13 +166,52 @@ export default class reel_act extends cc.Component {
     // appoint_y                指定移动到的目标点
     // appoint_act_name         指定动作名
     do_appoint_act(param){
-        // 当前y 作为时间time1 这帧
+        let type = param.type;
+        let appoint_act_name = param.appoint_act_name;
+        if(appoint_act_name == null){
+            cc.error('appoint_act_name == null');
+            return;
+        }
 
-        // 经过time2
-        // 当前y改变量应该是y
+        let animation = this.node.getComponent(cc.Animation);
+        let animState = animation.getAnimationState(appoint_act_name);
+        let stateData = this.animStateData[appoint_act_name];
+        if(stateData == null){
+            cc.error('error act_name:'+appoint_act_name);
+            return;
+        }
+        let values = stateData.values;
+        let frame_data = stateData.frame_data;
+        let duration = stateData.duration;
 
-        // 按比例
-        // 按1:1  实现
+        let time1 = null;
+        let time2 = null;
+        if(type == 1){
+            time1 = param.appoint_time1;
+            time2 = param.appoint_time2;
+        }else if(type == 2){
+            let frame_obj1 = frame_data[param.appoint_frame1];
+            if(frame_obj1 == null){
+                cc.error('error frame_data:'+param.appoint_frame1);
+            }
+            let frame_obj2 = frame_data[param.appoint_frame1];
+            if(frame_obj2 == null){
+                cc.error('error frame_data:'+param.appoint_frame2);
+            }
+            time1 = frame_obj1.frame;
+            time2 = frame_obj2.frame;
+        }
+
+        // this.node.y
+        // time1
+        // time1
+
+        // param.appoint_y                指定移动到的目标点
+        // param.appoint_act_name         指定动作名
+
+        // if(){
+
+        // }
 
         // 采样时间 1  的坐标y1值
         // 采样时间 2  的坐标y2值

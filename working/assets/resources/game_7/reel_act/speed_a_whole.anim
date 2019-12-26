@@ -3,8 +3,8 @@
   "_name": "speed_a_whole",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 6,
-  "sample": 10,
+  "_duration": 1.3333333333333333,
+  "sample": 60,
   "speed": 1,
   "wrapMode": 1,
   "curveData": {
@@ -13,16 +13,15 @@
         {
           "frame": 0,
           "value": 0,
-          "curve": [
-            0.48,
-            0,
-            0.7347862718494406,
-            1.3140212070188348
-          ]
+          "curve": "quadIn"
         },
         {
-          "frame": 6,
+          "frame": 1,
           "value": 2000
+        },
+        {
+          "frame": 1.3333333333333333,
+          "value": 1900
         }
       ]
     }

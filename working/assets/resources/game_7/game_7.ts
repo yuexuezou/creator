@@ -26,7 +26,92 @@ export default class game_7 extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        
+        // let types = [];
+        // types[0] = [0.25, 0.46, 0.5875598086124402, 0.9978468899521531];
+        // types[1] = [0.30000000000000004, 0.27308612440191393, 0.6820574162679426, 0.7209330143540669];
+        // let values = [0, 1250, 1200];
+        // 怎么用？
+        // curveData:
+        // props:
+        // y: Array(3)
+        // 0: {frame: 0, value: 0, curve: Array(4)}
+        // 1: {frame: 0.8333333333333334, value: 1250, curve: Array(4)}
+        // 2: {frame: 1, value: 1200}
+
+        // 加速一段
+        // 0 ~ 1
+        // 匀速一段
+        // 1 ~ 2
+        // 减速一段
+        // 2 ~ 3 ~ 4
+
+
+
+        /*
+            var animation = this.node.getComponent(cc.Animation);
+            // frames 这是一个 SpriteFrame 的数组.
+            var clip = cc.AnimationClip.createWithSpriteFrames(frames, 17);
+            clip.name = "anim_run";
+            clip.wrapMode = cc.WrapMode.Loop;
+
+            // 添加帧事件
+            clip.events.push({
+                frame: 1,               // 准确的时间，以秒为单位。这里表示将在动画播放到 1s 时触发事件
+                func: "frameEvent",     // 回调函数名称
+                params: [1, "hello"]    // 回调参数
+            });
+
+            animation.addClip(clip);
+            animation.play('anim_run');
+
+
+
+            提供接口
+            传入两个时间点
+            执行动作线
+
+            指定时间   指定位置
+            点前位置
+
+            // 原始数据存一份 不然采样就错了
+
+            // param
+            // type 1：按指定时间 2：按指定帧
+            // appoint_time1            指定时间1
+            // appoint_time2            指定时间2
+            // appoint_frame1           指定帧1（必须是存在的关键帧）
+            // appoint_frame2           指定帧2（必须是存在的关键帧）
+            // appoint_y                指定移动到的目标点
+            // appoint_act_name         指定动作名
+            do_appoint_act(param){
+                当前y 作为时间time1 这帧
+                经过time2
+                当前y改变量应该是y
+
+                按比例
+                按1:1  实现
+
+                采样时间 1  的坐标y1值
+                采样时间 2  的坐标y2值
+
+                计算起始坐标y（对应第0帧的坐标y）
+                计算结束坐标y（对应最后一帧的坐标y）
+                播放动作（根据动作名）
+                修改时间appoint_time1
+                添加帧事件
+                1个动画就加一个帧事件
+
+
+
+
+
+
+            }
+        */
+
+
+
+
     }
 
     start () {
@@ -36,13 +121,13 @@ export default class game_7 extends cc.Component {
         //     {id:4},{id:4},{id:4},{id:4},{id:4},
         //     {id:7},{id:7},{id:7},{id:7},{id:7},
         // ];
-        let result = [
-            {id:13},{id:13},{id:13},{id:13},{id:13},
-            {id:5},{id:5},{id:5},{id:5},{id:5},
-            {id:4},{id:4},{id:4},{id:4},{id:4},
-            {id:7},{id:7},{id:7},{id:7},{id:7},
-        ];
-        this.reel_mgr.setInitResult(result);
+        // let result = [
+        //     {id:13},{id:13},{id:13},{id:13},{id:13},
+        //     {id:5},{id:5},{id:5},{id:5},{id:5},
+        //     {id:4},{id:4},{id:4},{id:4},{id:4},
+        //     {id:7},{id:7},{id:7},{id:7},{id:7},
+        // ];
+        // this.reel_mgr.setInitResult(result);
         // cc.log(this.reel_mgr.getElementNode(0));
         // cc.log(this.reel_mgr.getElementNode(1));
         // cc.log(this.reel_mgr.getElementNode(2));
@@ -51,6 +136,8 @@ export default class game_7 extends cc.Component {
 
     }
 
+    
+    
     reelStart(){
         this.reel_mgr.reelStart();
     }

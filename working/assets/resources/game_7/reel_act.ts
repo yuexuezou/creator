@@ -2,12 +2,9 @@
 
 enum act_state{
     none = 0,
-    speed_a_up = 1,
-    speed_a_uniform = 2,
-    speed_a_down = 3,
-    speed_b_up = 4,
-    speed_b_uniform = 5,
-    speed_b_down = 6,
+    speed_up = 1,
+    speed_uniform = 2,
+    speed_down = 3,
 }
 const {ccclass} = cc._decorator;
 
@@ -27,25 +24,37 @@ export default class reel_act extends cc.Component {
 
     copy_deep:Function;
     reel_index:number = 0;
-    config_time: { uniform: number; down: number; };
-    config_y: { uniform: number; down: number; };
+    // config_time: { uniform: number; down: number; };
+    // config_y: { uniform: number; down: number; };
     delay_node: cc.Node;   //延迟节点
     timing_node: cc.Node;   //定时节点（外部用）
+
+	stop_lock:boolean=false; //锁住之后不能再强制停止
+    is_stop:boolean=true;
+    speed_state: any;
     act_state:act_state;
+    is_init: boolean = false;
     onLoad () {
+        this.init();
+    }
+
+    init(){
+        if(this.is_init){
+            return
+        }
+        this.is_init = true;
         // 时间动作按照 时间 为1 帧率 60 计算
         // 5 * 6 = 30    7 * 6 = 42
         //（从编辑器确定）0.30帧 转换成秒 1=60
-        this.config_time = {
-            uniform:0.5, //30 帧 第几秒开始匀速
-            down:0.7,   //42 帧 第几秒开始减速
-        }
-        this.config_y = {
-            uniform:0,
-            down:0,
-        }
+        // this.config_time = {
+        //     uniform:0.4, //30 帧 第几秒开始匀速
+        //     down:0.7,   //42 帧 第几秒开始减速
+        // }
+        // this.config_y = {
+        //     uniform:0,
+        //     down:0,
+        // }
 
-        this.node.y = 0;
         this.copy_deep = this.local_copy_deep;
         this.init_data();
         let animation = this.node.getComponent(cc.Animation);
@@ -53,14 +62,17 @@ export default class reel_act extends cc.Component {
         this.create_node('delay_node');
         this.create_node('timing_node');
         this.act_state = act_state.none;
+        this.node.y = 0;
     }
 
     onFinished(event_name, AnimationState?){
         let act_name = AnimationState.name;
         if(act_name == 'speed_a_whole'){
+            this.is_stop = true;
             this.finish_call && this.finish_call();
             this.act_state = act_state.none;
         }else if(act_name == 'speed_b_whole'){
+            this.is_stop = true;
             this.finish_call && this.finish_call();
             this.act_state = act_state.none;
         }
@@ -73,32 +85,20 @@ export default class reel_act extends cc.Component {
         let animStateData = this.animStateData;
         let clips = animation.getClips();
         for (let index = 0; index < clips.length; index++) {
-            const clip = clips[index];
+            let clip = clips[index];
             let animState = animation.getAnimationState(clip.name);
-
-            let config_y = {};
-            let time_obj = {};
-            for (const key in this.config_time) {
-                let time = this.config_time[key] * animState.duration;
-                animation.play(clip.name, time);
-                // 采样
-                animation.sample(clip.name);
-                config_y[key] = this.node.y;
-                animation.stop();
-                time_obj[key] = time;
-            }
-
+            // props_y
+            // 0: {frame: 0, value: 0, curve: "quadIn"}
+            // 1: {frame: 1, value: 2000}
+            // 2: {frame: 1.3333333333333333, value: 1900}
             let obj = {
                 values:this.copy_deep(animState.curves[0].values),
-                // types:this.copy_deep(animState.curves[0].types[0]),
                 duration:animState.duration,
-                config_y:config_y,
-                time_obj:time_obj,
+                props_y:this.copy_deep(animState.clip.curveData.props.y),
             }
             animStateData[clip.name] = obj;
         }
-        cc.log(this.config_time);
-        cc.log(this.animStateData);
+        cc.log(animStateData);
     }
 
     // 工具函数       ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
@@ -120,15 +120,69 @@ export default class reel_act extends cc.Component {
         node.runAction(seq1);
     }
 
-    // 工具函数       ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    /* 
 
+
+
+
+    curveData:
+    props:
+    y: Array(3)
+    0: {frame: 0, value: 0, curve: "quadIn"}
+    1: {frame: 1, value: 2000}
+    2: {frame: 1.3333333333333333, value: 1900}
+    length: 3
+    __proto__: Array(0)
+    __proto__: Object
+    __proto__: Object
+    duration: 1.3333333333333333
+    events: []
+    frameRate: 60
+    isValid: (...)
+    loaded: true
+    name: (...)
+    nativeUrl: (...)
+    sample: 60
+    speed: 1
+    url: ""
+    wrapMode: 1
+    
+    */
+    // 工具函数       ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    // param
+    // type 1：按指定时间 2：按指定帧
+    // appoint_time1            指定时间1
+    // appoint_time2            指定时间2
+    // appoint_frame1           指定帧1（必须是存在的关键帧）
+    // appoint_frame2           指定帧2（必须是存在的关键帧）
+    // appoint_y                指定移动到的目标点
+    // appoint_act_name         指定动作名
+    do_appoint_act(param){
+        // 当前y 作为时间time1 这帧
+
+        // 经过time2
+        // 当前y改变量应该是y
+
+        // 按比例
+        // 按1:1  实现
+
+        // 采样时间 1  的坐标y1值
+        // 采样时间 2  的坐标y2值
+
+        // 计算起始坐标y（对应第0帧的坐标y）
+        // 计算结束坐标y（对应最后一帧的坐标y）
+        // 播放动作（根据动作名）
+        // 修改时间appoint_time1
+        // 添加帧事件
+        // 1个动画就加一个帧事件
+
+    }
 
     // 加速
     speed_up_a(){
-        if(this.act_state != act_state.none){
-            return;
-        }
-        this.act_state = act_state.speed_a_up;
+		this.stop_lock = false;
+        this.is_stop = false;
+        this.act_state = act_state.speed_up;
         this.delay_node.stopAllActions();
         let animation = this.node.getComponent(cc.Animation);
         let animState = animation.getAnimationState('speed_a_whole');
@@ -142,7 +196,7 @@ export default class reel_act extends cc.Component {
         animation.play('speed_a_whole');
         this.delay_do(this.delay_node, stateData.time_obj.uniform, ()=>{
             animation.stop();
-            this.act_state = act_state.speed_a_uniform;
+            this.act_state = act_state.speed_uniform;
             this.speed_uniform_a();
         });
     }
@@ -155,10 +209,14 @@ export default class reel_act extends cc.Component {
         let uniform_vt = (stateData.config_y.down - stateData.config_y.uniform)/(stateData.time_obj.down - stateData.time_obj.uniform);
         if(move_y){
             let time = move_y/uniform_vt;
-            this.delay_do(this.delay_node, time, ()=>{
-                this.node.stopAllActions();
+            let end_y = this.node.y + uniform_vt*time;
+            let move = cc.moveTo(time, cc.v2(0, end_y));
+            let call_func = cc.callFunc(()=>{
                 end_call && end_call();
             });
+            this.node.stopAllActions();
+            let seq = cc.sequence(move, call_func);
+            this.node.runAction(seq);
         }else{
             let time = run_time;
             let end_y = this.node.y + uniform_vt*time;
@@ -173,13 +231,13 @@ export default class reel_act extends cc.Component {
 
     // 减速+回弹
     speed_down_a(end_y?:any){
-        if(this.act_state != act_state.speed_a_uniform){
+        if(this.stop_lock){
             return;
         }
-        this.act_state = act_state.speed_a_down;
+        this.stop_lock = true;
         let animation = this.node.getComponent(cc.Animation);
         animation.stop();
-
+        this.act_state = act_state.speed_down;
         let animState = animation.getAnimationState('speed_a_whole');
         let stateData = this.animStateData['speed_a_whole'];
         let values = stateData.values;
@@ -192,8 +250,9 @@ export default class reel_act extends cc.Component {
         if(deff_y >= default_down_y){
             let move_y = deff_y - default_down_y;
             this.speed_uniform_a(null, move_y, ()=>{
-                animState.curves[0].values[0] = this.node.y - stateData.config_y.down; //(stateData.config_y.down/scale_y);
-                animState.curves[0].values[1] = this.node.y + values[1] - stateData.config_y.down;
+                animState.curves[0].values[0] = end_y-values[1];
+                animState.curves[0].values[1] = end_y;
+                animState.duration = stateData.duration;
                 animation.play('speed_a_whole');
                 animState.time = stateData.time_obj.down;
                 let reel_sound_time = (stateData.duration - stateData.time_obj.down) * 0.8;
@@ -210,13 +269,15 @@ export default class reel_act extends cc.Component {
             this.delay_node.stopAllActions();
             this.node.stopAllActions();
 
-            let scale_y = values[1]/deff_y;
-            animState.curves[0].values[0] = this.node.y-(stateData.config_y.down/scale_y); //(stateData.config_y.down/scale_y);
+            let total_y = deff_y / ((stateData.duration-stateData.time_obj.down)/stateData.duration);
+            let scale_y = values[1]/total_y;
+
+            animState.curves[0].values[0] = this.node.y-(total_y-deff_y);
             animState.curves[0].values[1] = end_y;
             animState.duration = stateData.duration/scale_y;
             animation.play('speed_a_whole');
             animState.time = stateData.time_obj.down/scale_y;
-            let reel_sound_time = (animState.duration - (stateData.config_y.down/scale_y)) * 0.8;
+            let reel_sound_time = (stateData.duration/scale_y - stateData.time_obj.down/scale_y) * 0.8;
             this.delay_do(this.delay_node, reel_sound_time, ()=>{
                 this.cb_reel_finish_pre && this.cb_reel_finish_pre();
             });
@@ -229,11 +290,11 @@ export default class reel_act extends cc.Component {
 
     // 加速
     speed_up_b(){
-        this.act_state = act_state.speed_a_up;
         this.delay_node.stopAllActions();
         this.node.stopAllActions();
         let animation = this.node.getComponent(cc.Animation);
         animation.stop();
+        this.act_state = act_state.speed_up;
         let animState = animation.getAnimationState('speed_b_whole');
         let stateData = this.animStateData['speed_b_whole'];
         let values = stateData.values;
@@ -245,6 +306,7 @@ export default class reel_act extends cc.Component {
         animation.play('speed_b_whole');
         this.delay_do(this.delay_node, stateData.time_obj.uniform, ()=>{
             animation.stop();
+            this.act_state = act_state.speed_uniform;
             this.speed_uniform_b();
         });
     }
@@ -257,16 +319,20 @@ export default class reel_act extends cc.Component {
         let uniform_vt = (stateData.config_y.down - stateData.config_y.uniform)/(stateData.time_obj.down - stateData.time_obj.uniform);
         if(move_y){
             let time = move_y/uniform_vt;
-            this.delay_do(this.delay_node, time, ()=>{
-                this.node.stopAllActions();
+            let end_y = this.node.y + uniform_vt*time;
+            let move = cc.moveTo(time, cc.v2(0, end_y));
+            let call_func = cc.callFunc(()=>{
                 end_call && end_call();
             });
+            this.node.stopAllActions();
+            let seq = cc.sequence(move, call_func);
+            this.node.runAction(seq);
         }else{
             let time = run_time;
             let end_y = this.node.y + uniform_vt*time;
             let move = cc.moveTo(time, cc.v2(0, end_y));
             let call_func = cc.callFunc(()=>{
-                this.speed_uniform_b();
+                this.speed_uniform_a();
             });
             let seq = cc.sequence(move, call_func);
             this.node.runAction(seq);
@@ -275,10 +341,13 @@ export default class reel_act extends cc.Component {
 
     // 减速+回弹
     speed_down_b(end_y?:any){
-        this.act_state = act_state.speed_a_down;
+        if(this.stop_lock){
+            return;
+        }
+        this.stop_lock = true;
         let animation = this.node.getComponent(cc.Animation);
         animation.stop();
-
+        this.act_state = act_state.speed_down;
         let animState = animation.getAnimationState('speed_b_whole');
         let stateData = this.animStateData['speed_b_whole'];
         let values = stateData.values;
@@ -291,8 +360,9 @@ export default class reel_act extends cc.Component {
         if(deff_y >= default_down_y){
             let move_y = deff_y - default_down_y;
             this.speed_uniform_a(null, move_y, ()=>{
-                animState.curves[0].values[0] = this.node.y - stateData.config_y.down; //(stateData.config_y.down/scale_y);
-                animState.curves[0].values[1] = this.node.y + values[1] - stateData.config_y.down;
+                animState.curves[0].values[0] = end_y-values[1];
+                animState.curves[0].values[1] = end_y;
+                animState.duration = stateData.duration;
                 animation.play('speed_b_whole');
                 animState.time = stateData.time_obj.down;
                 let reel_sound_time = (stateData.duration - stateData.time_obj.down) * 0.8;
@@ -309,13 +379,15 @@ export default class reel_act extends cc.Component {
             this.delay_node.stopAllActions();
             this.node.stopAllActions();
 
-            let scale_y = values[1]/deff_y;
-            animState.curves[0].values[0] = this.node.y-(stateData.config_y.down/scale_y); //(stateData.config_y.down/scale_y);
+            let total_y = deff_y / ((stateData.duration-stateData.time_obj.down)/stateData.duration);
+            let scale_y = values[1]/total_y;
+
+            animState.curves[0].values[0] = this.node.y-(total_y-deff_y);
             animState.curves[0].values[1] = end_y;
             animState.duration = stateData.duration/scale_y;
             animation.play('speed_b_whole');
             animState.time = stateData.time_obj.down/scale_y;
-            let reel_sound_time = (animState.duration - (stateData.config_y.down/scale_y)) * 0.8;
+            let reel_sound_time = (stateData.duration/scale_y - stateData.time_obj.down/scale_y) * 0.8;
             this.delay_do(this.delay_node, reel_sound_time, ()=>{
                 this.cb_reel_finish_pre && this.cb_reel_finish_pre();
             });
@@ -334,45 +406,49 @@ export default class reel_act extends cc.Component {
         let animation = this.node.getComponent(cc.Animation);
         animation.stop();  //动作
     }
-
-    test_1(){
-        // this.speed_a_whole();
+    speed_up(){
+        this.speed_state = 1;
+        if(this.act_state != act_state.none){
+            this.stop_curr_act();
+        }
         this.speed_up_a();
     }
-
-    test_2(){
-        this.speed_down_a();
+    speed_down(end_y?){
+        if(this.act_state != act_state.speed_uniform){
+            this.stop_curr_act();
+            if(this.speed_state == 1){
+                this.speed_uniform_a();
+            }else{
+                this.speed_uniform_b();
+            }
+        }
+        if(this.speed_state == 1){
+            this.speed_down_a(end_y);
+        }else{
+            this.speed_down_b(end_y);
+        }
     }
 
-    test_3(){
-        this.node.y = this.node.y + 1;
-        cc.log(this.node.y);
+    // 保持匀速
+    continue_reel(){
+        this.delay_node.stopAllActions(); // 延迟
+        this.timing_node.stopAllActions();
+        this.stop_lock = false;
+        this.is_stop = false;
+        if(this.act_state != act_state.speed_uniform){
+            this.speed_uniform_a();
+        }
     }
 
-    test_4(){
-        let animation = this.node.getComponent(cc.Animation);
-        animation.pause();
-    }
-
-    test_5(){
-        let animation = this.node.getComponent(cc.Animation);
-        animation.resume();
-    }
-
-
-    test_6(){
-        this.stop_curr_act();
-        this.speed_up_b();
-    }
-
-    test_7(){
+    // 增加速度
+    increaseReelSpeed(){
+        this.stop_lock = false;
+        this.is_stop = false;
+        this.speed_state = 2;
         this.stop_curr_act();
         this.speed_uniform_b();
     }
 
-    test_8(){
-        this.speed_down_b();
-    }
 
     // ------------------------------------------------------------------------------
     // 工具方法

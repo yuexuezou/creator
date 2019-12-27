@@ -227,7 +227,7 @@ export default class reel_act extends cc.Component {
         let deff_y = sample_data1.y - ago_y;
         cc.log(sample_data1, time1, deff_y);
         cc.log(sample_data2, time2);
-        
+
         set_values = [];
         for (let index = 0; index < values.length; index++) {
             if(index == 0){
@@ -241,8 +241,6 @@ export default class reel_act extends cc.Component {
         animState.curves[0].values = set_values;
 
         let appoint_y = param.appoint_y;
-        let start_y = 0;
-        let end_y = values[frame_data.length-1];
         let set_duration = duration;
         let time = time1;
         // let set_values = [];
@@ -265,6 +263,18 @@ export default class reel_act extends cc.Component {
 
         // 采样时间 1  的坐标y1值
         // 采样时间 2  的坐标y2值
+
+        // 采样坐标1
+        // 采样坐标2
+
+        // 100
+        // 120
+
+
+        // 150
+        // 300
+        // 当前坐标node.y
+        // 移动到目标点
 
         // 计算起始坐标y（对应第0帧的坐标y）
         // 计算结束坐标y（对应最后一帧的坐标y）

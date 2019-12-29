@@ -168,7 +168,7 @@
       "array": [
         0,
         0,
-        367.19912763459445,
+        367.19477120460203,
         0,
         0,
         0,
@@ -1688,7 +1688,7 @@
         "__id__": 53
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 58
@@ -8606,7 +8606,7 @@
     },
     "component": "",
     "_componentId": "cb490KePLZLEayg2UuYAXwq",
-    "handler": "test_6",
+    "handler": "speed_up",
     "customEventData": ""
   },
   {
@@ -8988,7 +8988,7 @@
     },
     "component": "",
     "_componentId": "cb490KePLZLEayg2UuYAXwq",
-    "handler": "test_7",
+    "handler": "speed_down",
     "customEventData": ""
   },
   {

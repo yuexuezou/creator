@@ -79,15 +79,16 @@ export default class reel_act extends cc.Component {
     }
 
     // 获取当前匹配数据的 时间
-    get_match_time(act_name, check_value, not_frame){
+    get_match_time(act_name, check_value, frame1, frame2){
         let stateData = this.animStateData[act_name];
         let frame_obj = stateData.frame_obj;
 
         let min_idx = null;
         let min_value = null;
         let deff = null;
-        for (let index = 0; index < frame_obj.length; index++) {
-            if(not_frame == null || (not_frame && not_frame != index)){
+        let start_frame = frame1 || 0;
+        for (let index = start_frame; index < frame_obj.length; index++) {
+            if(frame2 == null || (frame2 && frame2 != index)){
                 let frame_data = frame_obj[index];
                 deff = Math.abs((frame_data - check_value));
                 if(min_value == null){
@@ -223,17 +224,21 @@ export default class reel_act extends cc.Component {
             }
             let deff_value = appoint_y - frame_obj2;
             let check_value = this.node.y - deff_value;
-            let time1 = this.get_match_time(act_name, check_value, param.frame2);
+            let time1 = this.get_match_time(act_name, check_value, param.frame1, param.frame2);
             let time2 = param.frame2 * step_time;
+            
             let set_values = []
             for (let index = 0; index < values.length; index++) {
                 set_values[index] = values[index] + deff_value;
             }
+            
             animState.curves[0].values = set_values;
             animState.play();
             animState.time = time1;
             let end_time = (time2-time1)/speed;
-            cc.log(end_time, time2, time1);
+            cc.log(set_values);
+            cc.log("////////");
+            cc.log(time1, time2, end_time, appoint_y);
             this.delay_do(this.delay_node, end_time, ()=>{
                 animState.stop();
                 end_call && end_call();
@@ -302,31 +307,83 @@ export default class reel_act extends cc.Component {
 
     // 匀速
     speed_uniform_a(run_time=100, move_y?, end_call?){
-        let param = {
-            type:1,
-            frame1:60,
-            frame2:90,
-            act_name:'speed_a_whole',
-            end_call:()=>{
+        let frame1 = 60;
+        let frame2 = 90;
+        // cc.log("匀速");
+        let stateData = this.animStateData['speed_a_whole'];
+        let frame_obj = stateData.frame_obj;
+        let frame_obj1 = frame_obj[frame1];
+        if(frame_obj1 == null){
+            cc.error('error frame_obj:'+frame1);
+        }
+        let frame_obj2 = frame_obj[frame2];
+        if(frame_obj2 == null){
+            cc.error('error frame_obj:'+frame2);
+        }
+        let step_time = stateData.step_time;
+        let uniform_vt = (frame_obj2 - frame_obj1) / (frame2*step_time - frame1*step_time);
+        if(move_y){
+            let time = move_y/uniform_vt;
+            let end_y = this.node.y + uniform_vt*time;
+            let move = cc.moveTo(time, cc.v2(0, end_y));
+            let call_func = cc.callFunc(()=>{
+                end_call && end_call();
+            });
+            this.node.stopAllActions();
+            let seq = cc.sequence(move, call_func);
+            this.node.runAction(seq);
+        }else{
+            let time = run_time;
+            let end_y = this.node.y + uniform_vt*time;
+            let move = cc.moveTo(time, cc.v2(0, end_y));
+            let call_func = cc.callFunc(()=>{
                 this.speed_uniform_a();
-            },
-        };
-        this.do_appoint_act(param);
+            });
+            let seq = cc.sequence(move, call_func);
+            this.node.runAction(seq);
+        }
     }
 
     // 减速+回弹
     speed_down_a(end_y?:any){
-        let param = {
-            type:2,
-            frame1:90,
-            frame2:140,
-            appoint_y:end_y,
-            act_name:'speed_a_whole',
-            end_call:()=>{
-                this.speed_uniform_a();
-            },
-        };
-        this.do_appoint_act(param);
+        if(end_y == null){
+            end_y = this.node.y + 125 * 3;
+        }
+        let deff = end_y - this.node.y;
+        cc.log(deff, end_y, this.node.y, "???");
+        let stateData = this.animStateData['speed_a_whole'];
+        let frame_obj = stateData.frame_obj;
+        let frame1 = 90;
+        let frame2 = 140;
+        let frame_obj1 = frame_obj[frame1];
+        let frame_obj2 = frame_obj[frame2];
+        if(deff > (frame_obj2 - frame_obj1)){
+            let move_y = deff - (frame_obj2 - frame_obj1);
+            this.speed_uniform_a(null, move_y, ()=>{
+                let param = {
+                    type:2,
+                    frame1:frame1,
+                    frame2:frame2,
+                    appoint_y:end_y,
+                    act_name:'speed_a_whole',
+                    end_call:()=>{
+                        // this.speed_uniform_a();
+                    },
+                };
+                this.do_appoint_act(param);
+            });
+        }else{
+            let param = {
+                type:2,
+                frame1:frame1,
+                frame2:frame2,
+                appoint_y:end_y,
+                act_name:'speed_a_whole',
+                end_call:()=>{
+                },
+            };
+            this.do_appoint_act(param);
+        }
     }
 
     // 加速
@@ -449,9 +506,10 @@ export default class reel_act extends cc.Component {
     }
     speed_up(){
         this.speed_state = 1;
-        if(this.act_state != act_state.none){
-            this.stop_curr_act();
-        }
+        // if(this.act_state != act_state.none){
+            
+        // }
+        this.stop_curr_act();
         this.speed_up_a();
     }
     speed_down(end_y?){
@@ -464,11 +522,12 @@ export default class reel_act extends cc.Component {
         //     }
         // }
         this.stop_curr_act();
-        if(this.speed_state == 1){
-            this.speed_down_a(end_y);
-        }else{
-            this.speed_down_b(end_y);
-        }
+        this.speed_down_a();
+        // if(this.speed_state == 1){
+        //     this.speed_down_a(end_y);
+        // }else{
+        //     this.speed_down_b(end_y);
+        // }
     }
 
     // 保持匀速

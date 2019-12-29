@@ -78,6 +78,62 @@ export default class reel_act extends cc.Component {
         }
     }
 
+    init_animStateData(node){
+        let animation = node.getComponent(cc.Animation);
+        this.animStateData = {};
+        let animStateData = this.animStateData;
+        let clips = animation.getClips();
+        for (let index = 0; index < clips.length; index++) {
+            const clip = clips[index];
+            let animState = animation.getAnimationState(clip.name);
+            let frame_num = Math.ceil(clip.duration * clip.sample);
+            let step_time = clip.duration/frame_num;
+
+            let frame_obj = [];
+            animState.play();
+            for (let index = 0; index <= frame_num; index++) {
+                let time = index*step_time;
+                animState.time = time;
+                // 采样
+                animation.sample(clip.name);
+                // 需要保存的数据
+                frame_obj.push(node.y);
+            }
+            animState.stop();
+
+            let obj = {
+                values:slot.copy_deep(animState.curves[0].values),
+                duration:animState.duration,
+                frame_obj:frame_obj,
+                step_time:step_time,
+            }
+            animStateData[clip.name] = obj;
+        }
+    }
+    // 获取当前匹配数据的 时间
+    get_match_time(act_name){
+        let check_value = this.panel_move.y;
+        let stateData = this.animStateData[act_name];
+        let frame_obj = stateData.frame_obj;
+
+        let min_idx = null;
+        let min_value = null;
+        let deff = null;
+        for (let index = 0; index < frame_obj.length; index++) {
+            let frame_data = frame_obj[index];
+            deff = Math.abs((frame_data - check_value));
+            if(min_value == null){
+                min_value = deff;
+                min_idx = index;
+            }else if(min_value > deff){
+                min_value = deff;
+                min_idx = index;
+            }
+        }
+        let time = min_idx * stateData.step_time;
+        return time;
+    }
+
     // 存储动作基本数据数据
     init_data(){
         let animation = this.node.getComponent(cc.Animation);
@@ -281,12 +337,16 @@ export default class reel_act extends cc.Component {
         // 播放动作（根据动作名）
         // 修改时间appoint_time1
 
+
+
+
     }
     // 采样
     act_sample(act_name, time){
         let animation = this.node.getComponent(cc.Animation);
         animation.play(act_name, time);
         animation.sample(act_name);
+        
         let data = {
             y:this.node.y,
         };
@@ -301,15 +361,26 @@ export default class reel_act extends cc.Component {
 
     final_test(){
         cc.log("终极测试");
-        let param = {
-            type:1,
-            appoint_time1:0,
-            appoint_time2:0.5,
-            appoint_frame1:0,
-            appoint_frame2:0.5,
-            appoint_act_name:'speed_a_whole',
-        };
-        this.do_appoint_act(param);
+        // let param = {
+        //     type:1,
+        //     appoint_time1:0,
+        //     appoint_time2:0.5,
+        //     appoint_frame1:0,
+        //     appoint_frame2:0.5,
+        //     appoint_act_name:'speed_a_whole',
+        // };
+        // this.do_appoint_act(param);
+
+        let animation = this.node.getComponent(cc.Animation);
+        animation.play('speed_a_whole');
+        this.node.y = 100
+        animation.sample('speed_a_whole');
+        let animState = animation.getAnimationState('speed_a_whole');
+        cc.log(animState.time, "animState.time");
+        animation.stop();
+        
+        // 分段取
+        
     }
 
     // 加速

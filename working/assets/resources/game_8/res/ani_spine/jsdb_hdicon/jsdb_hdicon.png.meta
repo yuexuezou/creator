@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "58d55681-ebe8-4173-897a-b4312dbf4cc8",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 84,
+  "height": 47,
   "platformSettings": {},
   "subMetas": {
     "jsdb_hdicon": {

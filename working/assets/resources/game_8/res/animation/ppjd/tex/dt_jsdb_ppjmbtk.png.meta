@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "ba6de4b1-0604-4e88-ab4d-dfa0e8d9ebdc",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 694,
+  "height": 100,
   "platformSettings": {},
   "subMetas": {
     "dt_jsdb_ppjmbtk": {

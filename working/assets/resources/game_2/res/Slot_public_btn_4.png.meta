@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "69091304-03a3-498d-9437-7fe351d8433b",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 313,
+  "height": 91,
   "platformSettings": {},
   "subMetas": {
     "Slot_public_btn_4": {

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "e24a2ac9-41f7-4b46-95cf-5ee4f7d254bb",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 1650,
+  "height": 1000,
   "platformSettings": {},
   "subMetas": {
     "SLOT大厅1": {

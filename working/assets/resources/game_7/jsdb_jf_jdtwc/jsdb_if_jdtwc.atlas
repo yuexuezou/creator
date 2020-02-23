@@ -1,0 +1,27 @@
+
+jsdb_if_jdtwc.png
+size: 264,105
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cghd_jdtwc_gs
+  rotate: false
+  xy: 2, 2
+  size: 104, 101
+  orig: 104, 101
+  offset: 0, 0
+  index: -1
+cxg_djk_dkgy
+  rotate: false
+  xy: 198, 39
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jdtgq
+  rotate: false
+  xy: 108, 15
+  size: 88, 88
+  orig: 88, 88
+  offset: 0, 0
+  index: -1

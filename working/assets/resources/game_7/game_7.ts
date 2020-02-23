@@ -133,7 +133,7 @@ export default class game_7 extends cc.Component {
         // cc.log(this.reel_mgr.getElementNode(2));
         // cc.log(this.reel_mgr.getElementNode(3));
         
-
+        
     }
 
     

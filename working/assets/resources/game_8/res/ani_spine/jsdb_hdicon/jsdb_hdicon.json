@@ -1,0 +1,117 @@
+{
+"skeleton": { "hash": "iJzCS/CAL7ZPXG7RUpG6jI5etlk", "spine": "3.6.50", "width": 160, "height": 72.45, "images": "./images/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "zi1gl", "parent": "root", "x": -19.98, "y": 6.92, "scaleX": 2, "scaleY": 2 },
+	{ "name": "zi2gl", "parent": "root", "x": -21.57, "y": -24.53, "scaleX": 2, "scaleY": 2 }
+],
+"slots": [
+	{ "name": "jsdb_hdicon_zigl1", "bone": "zi1gl", "attachment": "jsdb_hdicon_zigl1", "blend": "additive" },
+	{ "name": "jsdb_hdicon_zigl2", "bone": "zi2gl", "attachment": "jsdb_hdicon_zigl2", "blend": "additive" }
+],
+"skins": {
+	"default": {
+		"jsdb_hdicon_zigl1": {
+			"jsdb_hdicon_zigl1": { "width": 80, "height": 28 }
+		},
+		"jsdb_hdicon_zigl2": {
+			"jsdb_hdicon_zigl2": { "width": 73, "height": 13 }
+		}
+	}
+},
+"animations": {
+	"idle": {
+		"slots": {
+			"jsdb_hdicon_zigl1": {
+				"color": [
+					{
+						"time": 0,
+						"color": "ffffff00",
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 0.6667,
+						"color": "ffffffff",
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 1.5, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 3.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "jsdb_hdicon_zigl1" },
+					{ "time": 3.5, "name": "jsdb_hdicon_zigl1" }
+				]
+			},
+			"jsdb_hdicon_zigl2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{
+						"time": 0.6667,
+						"color": "ffffff00",
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 1.3333,
+						"color": "ffffffff",
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 2.1667, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 3.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "jsdb_hdicon_zigl2" },
+					{ "time": 3.5, "name": "jsdb_hdicon_zigl2" }
+				]
+			}
+		},
+		"bones": {
+			"zi2gl": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 3.5, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 3.5, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 3.5, "x": 1, "y": 1 }
+				]
+			},
+			"zi1gl": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 3.5, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 3.5, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 3.5, "x": 1, "y": 1 }
+				]
+			},
+			"root": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 3.5, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 3.5, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 3.5, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"drawOrder": [
+			{ "time": 0 },
+			{ "time": 3.5 }
+		]
+	}
+}
+}

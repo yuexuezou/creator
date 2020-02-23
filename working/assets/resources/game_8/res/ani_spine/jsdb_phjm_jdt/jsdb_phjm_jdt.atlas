@@ -1,0 +1,34 @@
+
+jsdb_phjm_jdt.png
+size: 744,68
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+jdt_gt
+  rotate: false
+  xy: 678, 14
+  size: 64, 52
+  orig: 64, 52
+  offset: 0, 0
+  index: -1
+jdt_gy
+  rotate: false
+  xy: 546, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jdt_xd
+  rotate: false
+  xy: 612, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jsd_phjm_jdtgl
+  rotate: false
+  xy: 2, 11
+  size: 542, 55
+  orig: 542, 55
+  offset: 0, 0
+  index: -1

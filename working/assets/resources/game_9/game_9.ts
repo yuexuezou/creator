@@ -10,7 +10,11 @@ export default class NewClass extends cc.Component {
     })
     reel_mgr: reel_mgr = null;
 
-
+    @property({
+        type: cc.Node,
+        tooltip:"ss",
+    })
+    img_node: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -88,11 +92,11 @@ export default class NewClass extends cc.Component {
             {id:1, ext:1},{id:1, ext:1},{id:1, ext:1},{id:1, ext:1},{id:1, ext:1},
             {id:1, ext:1},{id:1, ext:1},{id:1, ext:1},{id:1, ext:1},{id:1, ext:1},
         ];
-        for (let index = 0; index < result.length; index++) {
-            if(index > 5){
-                this.reel_mgr.reelLock(index);
-            }
-        }
+        // for (let index = 0; index < result.length; index++) {
+        //     if(index > 5){
+        //         this.reel_mgr.reelLock(index);
+        //     }
+        // }
         this.reel_mgr.reelStart();
     }
 
@@ -101,7 +105,15 @@ export default class NewClass extends cc.Component {
         this.reel_mgr.reelStop(true);
     }
     
-    
+    run_img(){
+        this.img_node.runAction(cc.moveTo(10, cc.v2(500, 0)));
+    }
+
+    set_img(){
+        this.img_node.stopAllActions();
+        this.img_node.x = 500;
+        // this.img_node.runAction(cc.moveTo(10, cc.v2(500, 0)));
+    }
 
     // update (dt) {}
 }

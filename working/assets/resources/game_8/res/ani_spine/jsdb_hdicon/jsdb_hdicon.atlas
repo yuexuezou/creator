@@ -1,0 +1,20 @@
+
+jsdb_hdicon.png
+size: 84,47
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+jsdb_hdicon_zigl1
+  rotate: false
+  xy: 2, 17
+  size: 80, 28
+  orig: 80, 28
+  offset: 0, 0
+  index: -1
+jsdb_hdicon_zigl2
+  rotate: false
+  xy: 2, 2
+  size: 73, 13
+  orig: 73, 13
+  offset: 0, 0
+  index: -1

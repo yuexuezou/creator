@@ -1,0 +1,53 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "bar_scale",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.6666666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "scale": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1,
+            "y": 1
+          },
+          "curve": "sineIn"
+        },
+        {
+          "frame": 0.18333333333333332,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1,
+            "y": 1
+          },
+          "curve": "sineIn"
+        },
+        {
+          "frame": 1.6666666666666667,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1,
+            "y": 3.8
+          }
+        }
+      ],
+      "x": [
+        {
+          "frame": 0,
+          "value": -96.294
+        },
+        {
+          "frame": 1.6666666666666667,
+          "value": 109.643
+        }
+      ]
+    }
+  },
+  "events": []
+}

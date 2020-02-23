@@ -1,0 +1,118 @@
+{
+"skeleton": { "hash": "jNU4o/Rzy9fiwVWF7TbkzQrmG4g", "spine": "3.6.50", "width": 217, "height": 160.5, "images": "./images/" },
+"bones": [
+	{ "name": "root", "scaleX": 0.5, "scaleY": 0.5 },
+	{ "name": "bone", "parent": "root", "x": 248.07, "y": 54.12 },
+	{ "name": "tu2", "parent": "root", "x": 27.97, "y": 3.58 }
+],
+"slots": [
+	{ "name": "tu2", "bone": "tu2", "attachment": "zhezhao" },
+	{ "name": "tu3", "bone": "bone", "attachment": "tu2" },
+	{ "name": "stop", "bone": "tu2" },
+	{ "name": "tu1", "bone": "root", "attachment": "tu1" }
+],
+"skins": {
+	"default": {
+		"tu1": {
+			"tu1": { "width": 335, "height": 241 }
+		},
+		"tu2": {
+			"zhezhao": {
+				"type": "clipping",
+				"end": "stop",
+				"vertexCount": 10,
+				"vertices": [ -178.59, 23.08, -135.93, 70.13, -60.44, 102.95, 12.31, 99.12, 166.17, 95.42, 124.45, 0.66, 131.65, -81.99, -58.8, -107.65, -116.78, -89.6, -175.31, -31.62 ],
+				"color": "ce3a3aff"
+			}
+		},
+		"tu3": {
+			"tu2": { "x": -247.16, "y": -54.96, "width": 434, "height": 321 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"stop": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"tu1": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "tu1" }
+				]
+			},
+			"tu2": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "zhezhao" }
+				]
+			},
+			"tu3": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "tu2" }
+				]
+			}
+		},
+		"bones": {
+			"tu2": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			},
+			"root": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			},
+			"bone": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"deform": {
+			"default": {
+				"tu2": {
+					"zhezhao": [
+						{ "time": 0 }
+					]
+				}
+			}
+		},
+		"drawOrder": [
+			{ "time": 0 }
+		]
+	}
+}
+}

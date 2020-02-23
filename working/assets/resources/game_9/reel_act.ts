@@ -136,7 +136,7 @@ export default class reel_act extends cc.Component {
             let animState = animation.getAnimationState(clip.name);
             let frame_num = Math.ceil(clip.duration * clip.sample);
             let step_time = clip.duration/frame_num;
-
+            cc.log(animState);
             let frame_obj = [];
             // animState.play();
             animation.getAnimationState(clip.name).play();

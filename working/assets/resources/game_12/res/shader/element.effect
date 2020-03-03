@@ -79,6 +79,7 @@ CCProgram fs %{
         x = x + 0.0;
         y = y - 0.1;
     }
+    
     // x = x / 0.8;
     vec4 texColor = texture2D(texture, vec2(x, y));
     // #if USE_TEXTURE

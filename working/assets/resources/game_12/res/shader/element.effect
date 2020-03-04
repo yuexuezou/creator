@@ -64,35 +64,22 @@ CCProgram fs %{
   #endif
 
   void main () {
-    // vec4 o = vec4(1, 1, 1, 1);
-    float x = v_uv0.x;
+    vec4 o = vec4(1, 1, 1, 1);
+    // v_uv0.x = v_uv0.x - 1.;
+    // v_uv0.y = v_uv0.y - 1.;
+    float x = v_uv0.x+0.5;
     float y = v_uv0.y;
-    if(x>=0.5){
-        // x = (1. - 0.001) * x;
-        if(y<0.5){
-            x = (1. - (y-0.5)*0.1) * x;
-        }else{
-            x = (1. - (1.-y-0.5)*0.1) * x;
-            
-        }
-    }else{
-        x = x + 0.0;
-        y = y - 0.1;
-    }
-    
-    // x = x / 0.8;
-    vec4 texColor = texture2D(texture, vec2(x, y));
-    // #if USE_TEXTURE
-    // o *= texture(texture, v_uv0);
-    //   #if CC_USE_ALPHA_ATLAS_TEXTURE
-    //   o.a *= texture2D(texture, v_uv0 + vec2(0, 0.5)).r;
-    //   #endif
-    // #endif
+    #if USE_TEXTURE
+    o *= texture(texture, vec2(x, y));
+      #if CC_USE_ALPHA_ATLAS_TEXTURE
+      o.a *= texture2D(texture, vec2(x, y)).r;
+      #endif
+    #endif
 
-    // o *= v_color;
+    o *= v_color;
 
-    // ALPHA_TEST(o);
+    ALPHA_TEST(o);
 
-    gl_FragColor = texColor;
+    gl_FragColor = o;
   }
 }%

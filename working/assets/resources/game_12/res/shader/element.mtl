@@ -4,10 +4,16 @@
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "dec0fad1-7379-490a-b2f3-450201b40b56"
+    "__uuid__": "4c0228b6-e450-48cf-8327-fcb0e0d4351e"
   },
   "_defines": {
-    "USE_TEXTURE": true
+    "USE_TEXTURE": true,
+    "USE_ALPHA_TEST": false
   },
-  "_props": {}
+  "_props": {
+    "texture": {
+      "__uuid__": "6f10745c-dd19-4f4a-8e9e-9bc94bfe3a9f"
+    },
+    "alphaThreshold": 1
+  }
 }

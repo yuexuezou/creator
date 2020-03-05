@@ -1,0 +1,200 @@
+// Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.  
+
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: vs
+      frag: fs
+      blendState:
+        targets:
+        - blend: true
+      rasterizerState:
+        cullMode: none
+      properties:
+        texture: { value: white }
+        u_dH: {
+          value: 0.0,
+          inspector: {
+            tooltip: "色相",
+            range: [-180.0, 180.0]
+          }
+        }
+        u_dS: {
+          value: 0.0,
+          inspector: {
+            tooltip: "饱和度",
+            range: [-1.0, 1.0]
+          }
+        }
+        u_dL: {
+          value: 0.0,
+          inspector: {
+            tooltip: "亮度",
+            range: [-1.0, 1.0]
+          }
+        }
+}%
+
+
+CCProgram vs %{
+  precision highp float;
+
+  #include <cc-global>
+  #include <cc-local>
+
+  in vec3 a_position;
+
+  in vec2 a_uv0;
+  out vec2 v_uv0;
+  in vec3 pos;
+
+  void main () {
+    gl_Position = cc_matViewProj * vec4(a_position, 1);
+    v_uv0 = a_uv0;
+  }
+}%
+
+
+CCProgram fs %{
+  precision highp float;
+  
+  #include <cc-global>
+  #include <cc-local>
+
+  in vec2 v_uv0;
+
+  uniform sampler2D texture;
+
+  uniform ARGS {
+    float u_dH;
+    float u_dS;
+    float u_dL;
+  };
+  out vec3 pos;
+  const float waterwid = 1.0;
+  const float deepwid = 0.01;
+  const float pi = 3.141592653589793;
+
+  float CountScale(float left,float right)
+  {
+    //水深
+    // float depth = pos.y;
+    float depth = 0.5;
+    // //防止怪异现象
+    // if (depth > 1.)
+    // {
+    //     depth = 1.;
+    // }
+    // else if (depth < 0.)
+    // {
+    //     depth = 0.;
+    // }
+    depth = 0.5;
+    //像素Y值缩放
+    float scale = 1.-depth;
+    float length = right - left;
+    float mysca = pi/length;
+    //向下弯曲的坐标值定在0.-1.之间
+    float mpos = (v_uv0.x - left)/length;
+    if (mpos < (1.-deepwid)/2. )
+    {
+        mpos = 1./(1.-deepwid)*(mpos);
+        scale = (1.-depth) + depth *(0.5001-0.5*(sin(-pi/2.+mpos*2.*pi)) );
+    }
+    else if( mpos > (1.+deepwid)/2.)
+    {
+        mpos = 1./(1.-deepwid)*(mpos-deepwid);
+        scale = (1.-depth)+ (depth)*(.5001-.5*( sin(-pi/2.+(mpos)*2.*pi) ) );
+    }
+    return scale;
+  }
+  void main () {
+    float scale = 1.;
+    float left  = pos.x - waterwid/2.;
+    float right = pos.x + waterwid/2.;
+    // scale = CountScale(left,right);
+    // mycolor = texture2D(texture, vec2(v_uv0.x, 1./2.*(v_uv0.y-1.+2.))  );
+    // vec4 texColor = texture2D(texture, vec2(v_uv0.x,1./scale*(v_uv0.y-1.+scale))  );
+
+    vec4 texColor=texture2D(texture, vec2(v_uv0.x, v_uv0.y));
+    // gl_FragColor = texColor;
+
+    float r=texColor.r;
+    float g=texColor.g;
+    float b=texColor.b;
+    float a=texColor.a;
+    //convert rgb to hsl
+    float h;
+    float s;
+    float l;
+    {
+        float max=max(max(r,g),b);
+        float min=min(min(r,g),b);
+        //----h
+        if(max==min){
+            
+            h=0.0;
+        }else if(max==r&&g>=b){
+            h=60.0*(g-b)/(max-min)+0.0;
+        }else if(max==r&&g<b){
+            h=60.0*(g-b)/(max-min)+360.0;
+        }else if(max==g){
+            h=60.0*(b-r)/(max-min)+120.0;
+        }else if(max==b){
+            h=60.0*(r-g)/(max-min)+240.0;
+        }
+        //----l
+        l=0.5*(max+min);
+        //----s
+        if(l==0.0||max==min){
+            s=0.0;
+        }else if(0.0<=l&&l<=0.5){
+            s=(max-min)/(2.0*l);
+        }else if(l>0.5){
+            s=(max-min)/(2.0-2.0*l);
+        }
+    }
+    //(h,s,l)+(dH,dS,dL) -> (h,s,l)
+    h=h+u_dH;
+    s=min(1.0,max(0.0,s+u_dS));
+    l=l;//do not use HSL model to adjust lightness, because the effect is not good
+    //convert (h,s,l) to rgb and got final color
+    vec4 finalColor;
+    {
+        float q;
+        if(l<0.5){
+            q=l*(1.0+s);
+        }else if(l>=0.5){
+            q=l+s-l*s;
+        }
+        float p=2.0*l-q;
+        float hk=h/360.0;
+        float t[3];
+        t[0]=hk+1.0/3.0;t[1]=hk;t[2]=hk-1.0/3.0;
+        for(int i=0;i<3;i++){
+            if(t[i]<0.0)t[i]+=1.0;
+            if(t[i]>1.0)t[i]-=1.0;
+        }//got t[i]
+        float c[3];
+        for(int i=0;i<3;i++){
+            if(t[i]<1.0/6.0){
+                c[i]=p+((q-p)*6.0*t[i]);
+            }else if(1.0/6.0<=t[i] && t[i]<0.5){
+                c[i]=q;
+            }else if(0.5<=t[i] && t[i]<2.0/3.0){
+                c[i]=p+((q-p)*6.0*(2.0/3.0-t[i]));
+            }else{
+                c[i]=p;
+            }
+        }
+        finalColor=vec4(c[0],c[1],c[2],a);
+    }
+    //actually, it is not final color. the lightness has not been adjusted
+    //adjust lightness use the simplest method
+    finalColor+=vec4(u_dL,u_dL,u_dL,0.0);
+    
+    // vec4 finalColor2 = vec4(1,0,0,1.0);
+    // finalColor=finalColor+vec4(1,0,0,1.0);
+    gl_FragColor=finalColor;
+  }
+}%

@@ -64,10 +64,32 @@ CCProgram fs %{
   #endif
 
   void main () {
+    // 图片宽、高、对应圆半径、横轴x
+    float width = 512.;
+    float height = 512.;
+    float img_scale = 0.25;
+    width = width * img_scale;
+    height = height * img_scale;
+
+    float max_x = 412.;
+    float max_scale_x = 0.3;
+    float circle_r = 175.;
+    float point_x = 0.;
+    float point_y = 0.;
+    point_x = point_x + v_uv0.x*width;
+    // point_y = point_y + (1.-v_uv0.y)*height;
+    point_y = point_y + v_uv0.y*height;
+    float scale_x = (point_x/max_x)*max_scale_x;
+    // 转换滚轴坐标
+    float switch_x = circle_r*circle_r - point_y*point_y;
+    switch_x = sqrt(switch_x);
+    switch_x = switch_x * scale_x;
+    float x = v_uv0.x - switch_x/width;
+
     vec4 o = vec4(1, 1, 1, 1);
     // v_uv0.x = v_uv0.x - 1.;
     // v_uv0.y = v_uv0.y - 1.;
-    float x = v_uv0.x+0.5;
+    // float x = v_uv0.x;
     float y = v_uv0.y;
     #if USE_TEXTURE
     o *= texture(texture, vec2(x, y));
@@ -83,3 +105,4 @@ CCProgram fs %{
     gl_FragColor = o;
   }
 }%
+

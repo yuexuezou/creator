@@ -20,6 +20,10 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     node_point: cc.Node = null;
 
+    @property(cc.Node)
+    light1: cc.Node = null;
+    @property(cc.Node)
+    light2: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -28,6 +32,39 @@ export default class NewClass extends cc.Component {
         cc.dynamicAtlasManager.enabled = false;
         // this.make_circle();
         // this.make_point();
+        for (let index = 1; index <= 100; index++) {
+            for (let index1 = 1; index1 <= 100; index1++) {
+                if(index%4 == 0 && index1%4==0){
+                    let v_uv0 = {x:index/100, y:index1/100};
+                    this.test_shader_data(v_uv0);
+                }
+            }
+        }
+    }
+    test_shader_data(v_uv0){
+        // 图片宽、高、对应圆半径、横轴x
+        let width = 512.;
+        let height = 512.;
+        let img_scale = 0.25;
+        width = width * img_scale;
+        height = height * img_scale;
+
+        let max_x = 412.;
+        let max_scale_x = 0.3;
+        let circle_r = 175.;
+        let point_x = 0.;
+        let point_y = 0.;
+        point_x = point_x + v_uv0.x*width;
+        // point_y = point_y + (1.-v_uv0.y)*height;
+        point_y = point_y + v_uv0.y*height;
+        let scale_x = (point_x/max_x)*max_scale_x;
+        // 转换滚轴坐标
+        let switch_x = circle_r*circle_r - point_y*point_y;
+        switch_x = Math.sqrt(switch_x);
+        switch_x = switch_x * scale_x;
+        let x = v_uv0.x - switch_x/width;
+        // cc.log(v_uv0.x, v_uv0.y, x);
+        this.add_point(v_uv0.x*300, v_uv0.y*300, cc.color(255, 255, 0, 255));
     }
     make_point(){
         this.node_point.active = false;

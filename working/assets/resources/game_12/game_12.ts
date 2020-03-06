@@ -32,14 +32,14 @@ export default class NewClass extends cc.Component {
         cc.dynamicAtlasManager.enabled = false;
         // this.make_circle();
         // this.make_point();
-        for (let index = 1; index <= 100; index++) {
-            for (let index1 = 1; index1 <= 100; index1++) {
-                if(index%4 == 0 && index1%4==0){
-                    let v_uv0 = {x:index/100, y:index1/100};
-                    this.test_shader_data(v_uv0);
-                }
-            }
-        }
+        // for (let index = 1; index <= 10; index++) {
+        //     for (let index1 = 1; index1 <= 10; index1++) {
+        //         if(index%1 == 0 && index1%1==0){
+        //             let v_uv0 = {x:index/10, y:index1/10};
+        //             this.test_shader_data(v_uv0);
+        //         }
+        //     }
+        // }
     }
     test_shader_data(v_uv0){
         // 图片宽、高、对应圆半径、横轴x
@@ -54,17 +54,31 @@ export default class NewClass extends cc.Component {
         let circle_r = 175.;
         let point_x = 0.;
         let point_y = 0.;
-        point_x = point_x + v_uv0.x*width;
-        // point_y = point_y + (1.-v_uv0.y)*height;
-        point_y = point_y + v_uv0.y*height;
+        point_x = point_x + (v_uv0.x-0.5)*width;
+        point_y = point_y - (v_uv0.y-0.5)*height;
         let scale_x = (point_x/max_x)*max_scale_x;
+        if(point_x < 0.){
+            scale_x = -1. * scale_x;
+        }
+        if(point_y>=circle_r){
+            point_y = circle_r;
+        }
+        
         // 转换滚轴坐标
         let switch_x = circle_r*circle_r - point_y*point_y;
-        switch_x = Math.sqrt(switch_x);
-        switch_x = switch_x * scale_x;
-        let x = v_uv0.x - switch_x/width;
-        // cc.log(v_uv0.x, v_uv0.y, x);
-        this.add_point(v_uv0.x*300, v_uv0.y*300, cc.color(255, 255, 0, 255));
+        switch_x = Math.sqrt(switch_x); //理论应在
+        cc.log(switch_x, "switch_x", scale_x, "scale_x", point_x, "point_x", point_y, "point_y");
+        switch_x = switch_x * scale_x; //实际在
+        let x = v_uv0.x + switch_x/width;
+        if(point_x < 0.){
+            x = v_uv0.x - switch_x/width;
+        }
+
+        let set_x = point_x+(x-0.5)*width;
+        let set_y = point_y+(0.5-v_uv0.y)*height;
+
+        // cc.log(set_x, set_y, "set_y");
+        this.add_point(set_x, set_y, cc.color(255, 255, 0, 255));
     }
     make_point(){
         this.node_point.active = false;

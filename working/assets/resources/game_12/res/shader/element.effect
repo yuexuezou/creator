@@ -13,8 +13,63 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.5 }
+        width: {
+          value: 0.0,
+          inspector: {
+            tooltip: "图片宽",
+            range: [0.0, 2048.0]
+          }
+        }
+        height: {
+          value: 0.0,
+          inspector: {
+            tooltip: "图片高",
+            range: [0.0, 2048.0]
+          }
+        }
+        img_scale: {
+          value: 0.0,
+          inspector: {
+            tooltip: "图片缩放",
+            range: [0.0, 10.0]
+          }
+        }
+        max_x: {
+          value: 0.0,
+          inspector: {
+            tooltip: "x轴最大值",
+            range: [0.0, 2048.0]
+          }
+        }
+        max_scale_x: {
+          value: 0.0,
+          inspector: {
+            tooltip: "最大缩放值",
+            range: [0.0, 10.0]
+          }
+        }
+        circle_r: {
+          value: 0.0,
+          inspector: {
+            tooltip: "半径",
+            range: [0.0, 2048.0]
+          }
+        }
+        point_x: {
+          value: 0.0,
+          inspector: {
+            tooltip: "图片坐标x",
+            range: [-2048.0, 2048.0]
+          }
+        }
+        point_y: {
+          value: 0.0,
+          inspector: {
+            tooltip: "图片坐标y",
+            range: [-2048.0, 2048.0]
+          }
+        }
 }%
-
 
 CCProgram vs %{
   precision highp float;
@@ -63,28 +118,54 @@ CCProgram fs %{
   uniform sampler2D texture;
   #endif
 
+
+  uniform curve {
+    // 图片宽、高、对应圆半径、横轴x
+    float width;
+    float height;
+    float img_scale;
+    float max_x;
+    float max_scale_x;
+    float circle_r;
+    float point_x;
+    float point_y;
+  };
+
   void main () {
     // 图片宽、高、对应圆半径、横轴x
-    float width = 512.;
-    float height = 512.;
-    float img_scale = 0.25;
-    width = width * img_scale;
-    height = height * img_scale;
+    // float width = 512.;
+    // float height = 512.;
+    // float img_scale = 0.25;
+    float set_width = width * img_scale;
+    float set_height = height * img_scale;
 
-    float max_x = 412.;
-    float max_scale_x = 0.3;
-    float circle_r = 175.;
-    float point_x = 0.;
-    float point_y = 0.;
-    point_x = point_x + v_uv0.x*width;
-    // point_y = point_y + (1.-v_uv0.y)*height;
-    point_y = point_y + v_uv0.y*height;
-    float scale_x = (point_x/max_x)*max_scale_x;
+    // float max_x = 412.;
+    // float max_scale_x = 0.5;
+    // float circle_r = 175.;
+    // float point_x = 0.;
+    // float point_y = 150.;
+    float set_x = point_x + (v_uv0.x-0.5)*set_width;
+    float set_y = point_y - (v_uv0.y-0.5)*set_height;
+
+    float scale_x = (set_x/max_x)*max_scale_x;
+    if(set_x < 0.){
+        scale_x = -1. * scale_x;
+    }
+    if(set_y>=circle_r){
+        set_y = circle_r;
+    }
     // 转换滚轴坐标
-    float switch_x = circle_r*circle_r - point_y*point_y;
-    switch_x = sqrt(switch_x);
-    switch_x = switch_x * scale_x;
-    float x = v_uv0.x - switch_x/width;
+    float switch_x = circle_r*circle_r - set_y*set_y;
+    switch_x = sqrt(switch_x); //理论应在
+    switch_x = switch_x * scale_x; //实际在
+    // float x = v_uv0.x + switch_x/set_width;
+    // if(set_x < 0.){
+    //     x = v_uv0.x - switch_x/set_width;
+    // }
+    float x = v_uv0.x - switch_x/set_width;
+    if(set_x < 0.){
+        x = v_uv0.x + switch_x/set_width;
+    }
 
     vec4 o = vec4(1, 1, 1, 1);
     // v_uv0.x = v_uv0.x - 1.;

@@ -32,7 +32,7 @@ export default class HSL extends cc.Component {
     start() {
         this.sprite = this.node.getComponent(cc.Sprite);
         this.material = this.sprite.getMaterial(0);
-        
+
 
         // let spine = this.node.getComponent(sp.Skeleton);
         // this.material = spine.getMaterial(0);

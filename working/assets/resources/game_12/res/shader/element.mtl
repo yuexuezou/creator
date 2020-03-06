@@ -14,6 +14,14 @@
     "texture": {
       "__uuid__": "6f10745c-dd19-4f4a-8e9e-9bc94bfe3a9f"
     },
-    "alphaThreshold": 1
+    "alphaThreshold": 1,
+    "width": 512,
+    "height": 512,
+    "img_scale": 0.25,
+    "max_x": 412,
+    "max_scale_x": 0.5,
+    "circle_r": 175,
+    "point_x": 0,
+    "point_y": 0
   }
 }

@@ -16,7 +16,10 @@ export default class NewClass extends cc.Component {
     sprite_node: cc.Node = null;
     sprite: cc.Sprite;
     material: any;
-
+    @property({
+        tooltip:"固定坐标",
+    })
+    fix_pos: cc.Vec2 = cc.v2(0, 0);
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -28,10 +31,15 @@ export default class NewClass extends cc.Component {
         this.init_img();
     }
     init_img() {
+        let parent = this.sprite_node.parent
+        let pp = parent.parent;
+        cc.log('pp', pp.x);
         let sprite_node = this.sprite_node;
         this.set_img_width(sprite_node.width);
         this.set_img_height(sprite_node.height);
         this.set_img_scale(sprite_node.scale);
+        this.set_point_x(this.fix_pos.x+pp.x);
+        this.set_point_y(this.fix_pos.y);
     }
     //图片宽
     set_img_width(value: number) {
@@ -69,10 +77,12 @@ export default class NewClass extends cc.Component {
     }
 
     callback_point_x(slider: cc.Slider) {
-        this.set_point_x(slider.progress*300)
+        this.set_point_x((0.5-slider.progress)*400);
+        cc.log((0.5-slider.progress)*400, "point_x");
     }
     callback_point_y(slider: cc.Slider) {
-        this.set_point_y(slider.progress*300)
+        this.set_point_y((0.5-slider.progress)*400);
+        cc.log((0.5-slider.progress)*400, "point_y");
     }
     // update (dt) {}
 }

@@ -18,8 +18,8 @@
     "width": 512,
     "height": 512,
     "img_scale": 0.25,
-    "max_x": 412,
-    "max_scale_x": 0.5,
+    "max_x": 482,
+    "max_scale_x": 0.3,
     "circle_r": 175,
     "point_x": 0,
     "point_y": 0

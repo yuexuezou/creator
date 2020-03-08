@@ -1,0 +1,24 @@
+{
+  "__type__": "cc.Material",
+  "_name": "",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "4dd6be20-cf41-49bb-9bf1-645a65d3e0f0"
+  },
+  "_defines": {},
+  "_props": {
+    "texture": {
+      "__uuid__": "1e57e9a6-ec96-4f05-97a7-9d02e67e35b6"
+    },
+    "drop": {
+      "__uuid__": "3c7dfac2-4943-4cf7-92d8-0f3e399741e7"
+    },
+    "resolution": {
+      "__type__": "cc.Vec2",
+      "x": 1,
+      "y": 1
+    },
+    "time": 0
+  }
+}

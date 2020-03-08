@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.4",
+  "ver": "2.3.3",
   "uuid": "8cdc15cc-5dbf-42d8-ae7d-4d2f63a57bd7",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,8 +7,6 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 200,
-  "height": 187,
   "platformSettings": {},
   "subMetas": {
     "competition_logo_1": {

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.4",
+  "ver": "2.3.3",
   "uuid": "dad50692-2487-4dbe-aec1-1877be7244d6",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,8 +7,6 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 290,
-  "height": 88,
   "platformSettings": {},
   "subMetas": {
     "competition_window_10": {

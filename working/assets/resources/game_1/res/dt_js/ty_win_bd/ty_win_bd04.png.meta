@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.4",
+  "ver": "2.3.3",
   "uuid": "ed6ed394-90da-480f-b7e0-68821541105b",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,8 +7,6 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 135,
-  "height": 134,
   "platformSettings": {},
   "subMetas": {
     "ty_win_bd04": {

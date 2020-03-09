@@ -20,7 +20,8 @@
     "img_scale": 0.25,
     "max_x": 482,
     "max_scale_x": 0.3,
-    "circle_r": 175,
+    "max_scale_y": 1,
+    "circle_r": 250,
     "point_x": 0,
     "point_y": 0
   }

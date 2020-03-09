@@ -20,6 +20,10 @@ export default class NewClass extends cc.Component {
         tooltip:"固定坐标",
     })
     fix_pos: cc.Vec2 = cc.v2(0, 0);
+    @property({
+        tooltip:"固定坐标",
+    })
+    fix_scale_max_y: number = 0.5;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -32,14 +36,16 @@ export default class NewClass extends cc.Component {
     }
     init_img() {
         let parent = this.sprite_node.parent
-        let pp = parent.parent;
+        let pp = parent;
         cc.log('pp', pp.x);
         let sprite_node = this.sprite_node;
         this.set_img_width(sprite_node.width);
         this.set_img_height(sprite_node.height);
         this.set_img_scale(sprite_node.scale);
         this.set_point_x(this.fix_pos.x+pp.x);
-        this.set_point_y(this.fix_pos.y);
+        // this.set_point_y(this.fix_pos.y);
+        this.set_point_y(this.fix_pos.y+pp.y);
+        this.set_max_scale_y(this.fix_scale_max_y);
     }
     //图片宽
     set_img_width(value: number) {
@@ -71,18 +77,25 @@ export default class NewClass extends cc.Component {
     set_max_scale_x(value: number) {
         this.material.setProperty("max_scale_x", value);
     }
+    //最大值的缩放值y
+    set_max_scale_y(value: number) {
+        this.material.setProperty("max_scale_y", value);
+    }
     //半径
     set_circle_r(value: number) {
         this.material.setProperty("circle_r", value);
     }
 
     callback_point_x(slider: cc.Slider) {
-        this.set_point_x((0.5-slider.progress)*400);
-        cc.log((0.5-slider.progress)*400, "point_x");
+        // this.set_point_x((0.5-slider.progress)*400);
+        // cc.log((0.5-slider.progress)*400, "point_x");
     }
     callback_point_y(slider: cc.Slider) {
-        this.set_point_y((0.5-slider.progress)*400);
-        cc.log((0.5-slider.progress)*400, "point_y");
+        let set_y = (0.5-slider.progress)*900;
+        let parent = this.sprite_node.parent;
+        parent.y = set_y;
+        this.set_point_y(set_y);
+        cc.log(set_y, "set_y");
     }
     // update (dt) {}
 }

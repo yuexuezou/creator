@@ -168,16 +168,18 @@ CCProgram fs %{
         float scale_y = 1.-((circle_r - temp_x)/circle_r)*(1.-max_scale_y);
         switch_y = scale_y * set_y;
     }
+    float y = v_uv0.y - (set_y-switch_y)/set_height;
 
+    // set_y = point_y - (y-0.5)*set_height;
     float scale_x = (set_x/max_x)*max_scale_x;
     if(set_x < 0.){
         scale_x = -1. * scale_x;
     }
-    if(switch_y>=circle_r){
-        switch_y = circle_r;
+    if(set_y>=circle_r){
+        set_y = circle_r;
     }
     // 转换滚轴坐标
-    float switch_x = circle_r*circle_r - switch_y*switch_y;
+    float switch_x = circle_r*circle_r - set_y*set_y;
     switch_x = sqrt(switch_x); //理论应在
 
     switch_x = switch_x * scale_x; //实际在
@@ -194,10 +196,6 @@ CCProgram fs %{
     // v_uv0.x = v_uv0.x - 1.;
     // v_uv0.y = v_uv0.y - 1.;
     // float x = v_uv0.x;
-    float y = v_uv0.y - (set_y-switch_y)/set_height;
-    if(set_y < 0.){
-        y = v_uv0.y - (set_y-switch_y)/set_height;
-    }
 
     #if USE_TEXTURE
     o *= texture(texture, vec2(x, y));

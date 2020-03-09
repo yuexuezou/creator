@@ -24,6 +24,10 @@ export default class NewClass extends cc.Component {
     light1: cc.Node = null;
     @property(cc.Node)
     light2: cc.Node = null;
+    set_y: number;
+    set_x: number;
+    point_x: number;
+    point_y: number;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -41,44 +45,127 @@ export default class NewClass extends cc.Component {
         //     }
         // }
     }
-    test_shader_data(v_uv0){
+    // test_shader_data(v_uv0){
+    //     // 图片宽、高、对应圆半径、横轴x
+    //     let width = 512.;
+    //     let height = 512.;
+    //     let img_scale = 0.25;
+    //     width = width * img_scale;
+    //     height = height * img_scale;
+
+    //     let max_x = 412.;
+    //     let max_scale_x = 0.3;
+    //     let max_scale_y = 0.3;
+    //     let circle_r = 250.;
+    //     let point_x = 0.;
+    //     let point_y = 0.;
+    //     point_x = point_x + (v_uv0.x-0.5)*width;
+    //     point_y = point_y - (v_uv0.y-0.5)*height;
+    //     let scale_x = (point_x/max_x)*max_scale_x;
+    //     if(point_x < 0.){
+    //         scale_x = -1. * scale_x;
+    //     }
+    //     if(point_y>=circle_r){
+    //         point_y = circle_r;
+    //     }
+        
+    //     // 转换滚轴坐标
+    //     let switch_x = circle_r*circle_r - point_y*point_y;
+    //     switch_x = Math.sqrt(switch_x); //理论应在
+    //     cc.log(switch_x, "switch_x", scale_x, "scale_x", point_x, "point_x", point_y, "point_y");
+    //     switch_x = switch_x * scale_x; //实际在
+    //     let x = v_uv0.x + switch_x/width;
+    //     if(point_x < 0.){
+    //         x = v_uv0.x - switch_x/width;
+    //     }
+
+    //     let set_x = point_x+(x-0.5)*width;
+    //     let set_y = point_y+(0.5-v_uv0.y)*height;
+
+    //     // cc.log(set_x, set_y, "set_y");
+    //     this.add_point(set_x, set_y, cc.color(255, 255, 0, 255));
+    // }
+    
+    callback_test_x(slider: cc.Slider) {
+        let set_y = this.set_y || 0.5;
+        this.test_data({x:slider.progress, y:set_y});
+        this.set_x = slider.progress;
+    }
+    callback_test_y(slider: cc.Slider) {
+        let set_x = this.set_x || 0.5;
+        this.test_data({x:set_x, y:slider.progress});
+        this.set_y = slider.progress;
+    }
+    callback_test_point_x(slider: cc.Slider) {
+        let set_x = this.set_x || 0.5;
+        let set_y = this.set_y || 0.5;
+        this.point_x = -1*(0.5-slider.progress)*900;
+        cc.log("this.point_x", this.point_x);
+        this.test_data({x:set_x, y:set_y});
+    }
+    callback_test_point_y(slider: cc.Slider) {
+        let set_x = this.set_x || 0.5;
+        let set_y = this.set_y || 0.5;
+        this.point_y = -1*(0.5-slider.progress)*900;
+        cc.log("this.point_y", this.point_y);
+        this.test_data({x:set_x, y:set_y});
+    }
+    test_data(v_uv0){
         // 图片宽、高、对应圆半径、横轴x
         let width = 512.;
         let height = 512.;
-        let img_scale = 0.25;
-        width = width * img_scale;
-        height = height * img_scale;
+        let img_scale = 1;
+        let set_width = width * img_scale;
+        let set_height = height * img_scale;
 
         let max_x = 412.;
-        let max_scale_x = 0.3;
-        let circle_r = 175.;
-        let point_x = 0.;
-        let point_y = 0.;
-        point_x = point_x + (v_uv0.x-0.5)*width;
-        point_y = point_y - (v_uv0.y-0.5)*height;
-        let scale_x = (point_x/max_x)*max_scale_x;
-        if(point_x < 0.){
+        let max_scale_x = 0.5;
+        let max_scale_y = 0.3;
+        let circle_r = 250.;
+        let point_x = this.point_x || 0.;
+        let point_y = this.point_y || 0.;
+
+        let set_x = point_x + (v_uv0.x-0.5)*set_width;
+        let set_y = point_y + (v_uv0.y-0.5)*set_height;
+        let switch_y = set_y;
+        if(switch_y < 0.){
+            switch_y = -1. * switch_y;
+        }
+        if(switch_y >= circle_r){
+            switch_y = max_scale_y * set_y;
+        }else{
+            let temp_x = circle_r*circle_r - switch_y*switch_y;
+            temp_x = Math.sqrt(temp_x);
+            let scale_y = 1.-((circle_r - temp_x)/circle_r)*(1.-max_scale_y);
+            switch_y = scale_y * set_y;
+        }
+        let y = v_uv0.y - (set_y-switch_y)/set_height;
+
+        // set_y = point_y - (y-0.5)*set_height;
+        let scale_x = (set_x/max_x)*max_scale_x;
+        if(set_x < 0.){
             scale_x = -1. * scale_x;
         }
-        if(point_y>=circle_r){
-            point_y = circle_r;
+        if(switch_y>=circle_r){
+            switch_y = circle_r;
         }
-        
         // 转换滚轴坐标
-        let switch_x = circle_r*circle_r - point_y*point_y;
+        let switch_x = circle_r*circle_r - switch_y*switch_y;
         switch_x = Math.sqrt(switch_x); //理论应在
-        cc.log(switch_x, "switch_x", scale_x, "scale_x", point_x, "point_x", point_y, "point_y");
+
         switch_x = switch_x * scale_x; //实际在
-        let x = v_uv0.x + switch_x/width;
-        if(point_x < 0.){
-            x = v_uv0.x - switch_x/width;
+        // let x = v_uv0.x + switch_x/set_width;
+        // if(set_x < 0.){
+        //     x = v_uv0.x - switch_x/set_width;
+        // }
+        let x = v_uv0.x + switch_x/set_width;
+        if(set_x < 0.){
+            x = v_uv0.x - switch_x/set_width;
         }
-
-        let set_x = point_x+(x-0.5)*width;
-        let set_y = point_y+(0.5-v_uv0.y)*height;
-
-        // cc.log(set_x, set_y, "set_y");
-        this.add_point(set_x, set_y, cc.color(255, 255, 0, 255));
+        cc.log("in x:", v_uv0.x);
+        cc.log("in y:", v_uv0.y);
+        cc.log("x:", x);
+        cc.log("y:", y);
     }
     make_point(){
         this.node_point.active = false;

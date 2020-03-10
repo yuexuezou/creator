@@ -11,9 +11,7 @@
     "USE_ALPHA_TEST": false
   },
   "_props": {
-    "texture": {
-      "__uuid__": "6f10745c-dd19-4f4a-8e9e-9bc94bfe3a9f"
-    },
+    "texture": null,
     "alphaThreshold": 1,
     "width": 512,
     "height": 512,
@@ -23,6 +21,7 @@
     "max_scale_y": 1,
     "circle_r": 250,
     "point_x": 0,
-    "point_y": 0
+    "point_y": 0,
+    "u_dH": 0
   }
 }

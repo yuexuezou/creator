@@ -168,7 +168,7 @@
       "array": [
         0,
         0,
-        491.9024293495612,
+        492.30837875758516,
         0,
         0,
         0,
@@ -3615,7 +3615,7 @@
       "__id__": 5
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 77
@@ -35733,7 +35733,7 @@
       "x": 0,
       "y": 0
     },
-    "fix_scale_max_y": 0.5,
+    "fix_scale_max_y": 0.3,
     "_id": "a8sRGJjdtBRKrPHz1Yh5uf"
   },
   {
@@ -37638,7 +37638,7 @@
       "__id__": 5
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 789

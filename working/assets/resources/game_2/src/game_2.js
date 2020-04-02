@@ -59,7 +59,7 @@ cc.Class({
         let num = 10;
         let cell_value = 255/num;
         let count_color = num * num + num * num + num * num + num + num + num;
-        cc.log(count_color, "count_color");
+        // cc.log(count_color, "count_color");
 
         let curr_index = 1;
         for (let index = 0; index < count_color; index++) {
@@ -68,17 +68,17 @@ cc.Class({
 
                 color_value = Math.floor(color_value - cell_value/2);
                 let color = cc.color(255, 255, color_value, 255);
-                cc.log(cc.color(color));
+                // cc.log(cc.color(color));
             }else if(curr_index < 2*num){
                 let color_value = cell_value * (curr_index-1*num);
                 color_value = Math.floor(color_value - cell_value/2);
                 let color = cc.color(255, color_value, 255, 255);
-                cc.color(color);
+                // cc.color(color);
             }else if(curr_index < 3*num){
                 let color_value = cell_value * (curr_index-2*num);
                 color_value = Math.floor(color_value - cell_value/2);
                 let color = cc.color(color_value, 255, 255, 255);
-                cc.color(color);
+                // cc.color(color);
             }else if(curr_index < 3*num + 1*num*num){
                 let cur_idx = curr_index-3*num
 
@@ -93,7 +93,7 @@ cc.Class({
                 color_value_2 = Math.floor(color_value_2 - cell_value/2);
 
                 let color = cc.color(color_value_1, color_value_2, 255, 255);
-                cc.color(color);
+                // cc.color(color);
             }else if(curr_index < 3*num + 2*num*num){
                 let cur_idx = curr_index-(3*num + 1*num*num)
 
@@ -108,7 +108,7 @@ cc.Class({
                 color_value_2 = Math.floor(color_value_2 - cell_value/2);
 
                 let color = cc.color(color_value_1, color_value_2, 255, 255);
-                cc.color(color);
+                // cc.color(color);
             }else if(curr_index < 3*num + 3*num*num){
                 let cur_idx = curr_index-(3*num + 2*num*num)
 
@@ -122,7 +122,7 @@ cc.Class({
                 color_value_1 = Math.floor(color_value_1 - cell_value/2);
                 color_value_2 = Math.floor(color_value_2 - cell_value/2);
                 let color = cc.color(color_value_1, color_value_2, 255, 255);
-                cc.color(color);
+                // cc.color(color);
             }
 
             curr_index = curr_index + 1;
@@ -431,4 +431,93 @@ cc.Class({
         return obj;
     },
 
+
+    // ----------------------------------------------------------------------------
+    run_obj_init(){
+        this.run_obj = {};
+        this.run_obj_num = 0;
+    },
+    // frame_call:(dt)=>{},
+    run_obj_add(obj){
+        let run_obj = this.run_obj;
+        let id = 1;
+        while (run_obj[id]) {
+            id = id + 1;
+        }
+        obj.id = id;
+        obj.time = obj.time || 0;
+        this.run_obj[id] = obj;
+        this.run_obj_num = this.run_obj_num + 1;
+    },
+    run_obj_remove(id){
+        delete this.run_obj[id];
+        this.run_obj_num = this.run_obj_num - 1;
+    },
+    // 每帧刷新
+    update(dt){
+        if(this.run_obj_num == null || this.run_obj_num <= 0){
+            return;
+        }
+        for (const id in this.run_obj) {
+            let obj = this.run_obj[id];
+            obj.time = obj.time + dt;
+            obj.frame_call(obj.time);
+        }
+    },
+    // ----------------------------------------------------------------------------
 });
+
+
+
+        // 当前动作帧
+
+        // 怎么随意切换状态
+        // 开始  快速停止 （）
+
+        // 提速
+
+        // 统一时间停止 慢速点了停止后 后停的不能先停
+            // 计算正在停止的列到停止需要的时间  与其余列停止的时间对比
+            //   10             5             后者必须再走 5 才执行 5
+            //   5              10            后者正常停
+            //   5              5             后者正常停
+
+        // 按照队列执行？执行完一个队列
+
+        /*
+            执行队列
+                循环队列
+                后面不再接受插入队列
+            转换队列
+                逆向转换
+                结束转换
+                强制转换
+
+            定时器
+
+
+
+        */
+       // 跑动画帧
+    // 开始帧
+    // 结束帧
+    // 速度
+    //    0             42
+    //    0             1130
+    //    time
+    // 逆向
+    //    42            0
+    // 无缝链接下一个阶段
+    // 随时加入新的节奏？
+    // 指定时间
+    // 当前时间能走的帧 直接跳转对应帧
+    // 0.1秒
+
+    // 0 - 42 41 42 41 42 41 42 41 42 41 42 41 42 41 42 41 42 41 42 41 42 42 - 60
+
+    
+    // 强制执行
+    // 插入时间点执行
+    // 修改当前动作时间 延长或加速？
+
+    

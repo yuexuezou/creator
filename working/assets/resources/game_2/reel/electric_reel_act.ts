@@ -186,8 +186,9 @@ export default class reel_act extends cc.Component {
         this.frame_end = param.frame_end;
         this.is_loop = param.is_loop;
         this.act_name = act_name;
-        this.step_time = param.step_time || stateData.step_time * stateData.speed;
+        this.step_time = param.step_time || stateData.step_time;
         this.speed = param.speed || stateData.speed;
+        cc.log(this.speed, "this.speed");
         this.node_y_start = this.node.y;
 
         this.run_flag = true;
@@ -200,6 +201,7 @@ export default class reel_act extends cc.Component {
             return;
         }
         this.time = this.time + dt*this.speed;
+        cc.log(this.speed, this.time, "?this.time")
         let stateData = this.stateData;
         // let values = stateData.values;
         let frame_obj = stateData.frame_obj;

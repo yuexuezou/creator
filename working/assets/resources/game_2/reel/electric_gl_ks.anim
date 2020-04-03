@@ -94,5 +94,16 @@
       ]
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 1.0166666666666666,
+      "func": "event_reel_finish_pre",
+      "params": []
+    },
+    {
+      "frame": 1.2833333333333334,
+      "func": "event_reel_finish",
+      "params": []
+    }
+  ]
 }

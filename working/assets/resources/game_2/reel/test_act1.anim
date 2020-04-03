@@ -3,7 +3,7 @@
   "_name": "test_act1",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.75,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -12,14 +12,26 @@
       "y": [
         {
           "frame": 0,
-          "value": 0
+          "value": 0,
+          "curve": [
+            0.7180602006688962,
+            0.03662207357859537,
+            0.8421404682274247,
+            0.5996655518394649
+          ]
         },
         {
-          "frame": 0.75,
+          "frame": 1,
           "value": 100
         }
       ]
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0.5,
+      "func": "event_reel_finish_pre",
+      "params": []
+    }
+  ]
 }

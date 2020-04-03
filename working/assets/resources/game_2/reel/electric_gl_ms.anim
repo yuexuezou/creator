@@ -5,7 +5,7 @@
   "_native": "",
   "_duration": 2.0166666666666666,
   "sample": 60,
-  "speed": 0.5,
+  "speed": 1,
   "wrapMode": 1,
   "curveData": {
     "paths": {},
@@ -86,5 +86,16 @@
       ]
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 1.75,
+      "func": "event_reel_finish_pre",
+      "params": []
+    },
+    {
+      "frame": 2.0166666666666666,
+      "func": "event_reel_finish",
+      "params": []
+    }
+  ]
 }

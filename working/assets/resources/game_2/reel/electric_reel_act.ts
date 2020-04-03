@@ -74,145 +74,91 @@ export default class reel_act extends cc.Component {
 
         this.is_init = true;
     }
+    // 滚轮音效帧
+    event_reel_finish_pre(){
+        if(this.node.isValid == false){
+            return;
+        }
+        if(this.event_open == false){
+            return;
+        }
 
-    // 滚轮 启动
-    reel_start_up(){
-        let param = {
-            act_name:"electric_gl_ys",
-            frame_start:0,
-            frame_end:42,
-            event_list_frame:[
-                {
-                    frame:42,
-                    call_func:()=>{
-                        cc.log('切换匀速');
-                        // this.reel_speed_normal();
-                        // this.reel_stop_low();
-                        // this.reel_stop_high();
-                        this.reel_stop_normal();
-                    }
-                }
-            ],
-        };
-        this.transfer(param);
-        // this.test_node.getComponent(cc.Animation).play('test_act1');
+        this.cb_reel_finish_pre && this.cb_reel_finish_pre();
     }
-    // 滚轮 中速
-    reel_speed_normal(){
-        let param = {
-            act_name:"electric_gl_ys",
-            frame_start:41,
-            frame_end:42,
-            is_loop:true,
-            event_list_time:[
-                {
-                    time:0.1,
-                    call_func:()=>{
-                        cc.log('0.5秒后回调');
-                        this.reel_stop_normal();
-                    }
-                }
-            ]
-        };
-        this.transfer(param);
-    }
-    // 滚轮 高速
-    reel_speed_high(){
-        let param = {
-            // act_name:"electric_gl_ys",
-            frame_start:42,
-            frame_end:43,
-            event_list_time:[
-                {
-                    frame:45,
-                    call_func:()=>{
-                        cc.log('结束回调');
-                        this.reel_speed_normal();
-                    }
-                }
-            ],
-        };
-        this.transfer(param);
-    }
-    // 滚轮 低速
-    reel_speed_low(){
-        let param = {
-            // act_name:"electric_gl_ys",
-            frame_start:42,
-            frame_end:43,
-        };
-        this.transfer(param);
-    }
-    // 滚轮 中速
-    reel_stop_normal(obj?){
-        let param = {
-            act_name:"electric_gl_ys",
-            frame_start:42,
-            frame_end:77,
-            appoint_y:this.node.y + 800,
-            event_list_frame:[
-                {
-                    frame:77,
-                    call_func:()=>{
-                        cc.log('停止');
-                    }
-                }
-            ],
-        };
-        this.add_event_frame(param);
-        this.transfer(param);
-    }
-    // 滚轮 高速
-    reel_stop_high(){
-        let param = {
-            act_name:"electric_gl_ks",
-            frame_start:42,
-            frame_end:77,
-            event_list_frame:[
-                {
-                    frame:77,
-                    call_func:()=>{
-                        cc.log('停止');
-                    }
-                }
-            ],
-        };
-        this.add_event_frame(param);
-        this.transfer(param);
-    }
-    // 滚轮 低速
-    reel_stop_low(){
-        let param = {
-            act_name:"electric_gl_ms",
-            frame_start:42,
-            frame_end:121,
-            event_list_frame:[
-                {
-                    frame:121,
-                    call_func:()=>{
-                        cc.log('停止');
-                    }
-                }
-            ],
-        };
-        this.add_event_frame(param);
-        this.transfer(param);
-    }
-    // 添加帧事件
-    add_event_frame(param){
-        let act_name = param.act_name;
-        let stateData = slot.game.animStateData[act_name];
-        let step_time = stateData.step_time;
-        let events = stateData.events;
-        if(param.event_list_frame == null){
-            param.event_list_frame = [];
+
+    // 滚轮停止
+    event_reel_finish(){
+        if(this.node.isValid == false){
+            return;
         }
-        for (let index = 0; index < events.length; index++) {
-            const element = events[index];
-            let frame = Math.floor(element.frame/step_time);
-            param.event_list_frame.push({frame:frame, call_func_name:element.func})
+        if(this.event_open == false){
+            return;
         }
+        this.reel_state = 'none';
+        this.act_state = act_state.none;
+        this.is_stop = true;
+        this.cb_reel_finish && this.cb_reel_finish();
     }
+
+    // 存储动作基本数据数据
+    init_data(){
+        if(slot.game.animStateDataIsInit){
+            return;
+        }
+        slot.game.animStateDataIsInit = true;
+
+        if(slot.game.animStateData){
+            return
+        }
+        let animation = this.node.getComponent(cc.Animation);
+        slot.game.animStateData = {};
+        let animStateData = slot.game.animStateData;
+        let clips = animation.getClips();
+        for (let index = 0; index < clips.length; index++) {
+            let clip = clips[index];
+            let animState = animation.getAnimationState(clip.name);
+            let frame_num = Math.ceil(clip.duration * clip.sample);
+            let step_time = clip.duration/frame_num;
+            let frame_obj = [];
+            // animState.play();
+            animation.getAnimationState(clip.name).play();
+            for (let index = 0; index <= frame_num; index++) {
+                let time = index*step_time;
+                animState.time = time;
+                // 采样
+                animation.sample(clip.name);
+                // 需要保存的数据
+                frame_obj.push(this.node.y);
+            }
+            animation.getAnimationState(clip.name).stop();
+            // animState.stop();
+            let obj = {
+                // values:this.copy_deep(animState.curves[0].values),
+                frame_obj:frame_obj,
+                step_time:step_time,
+                speed:animState.speed,
+                duration:clip.duration,
+                events:clip.events,
+                act_name:clip.name,
+            }
+            animStateData[clip.name] = obj;
+        }
+        // cc.log(animStateData);
+    }
+
+    // 采样
+    act_sample(act_name, time){
+        let animation = this.node.getComponent(cc.Animation);
+        animation.play(act_name, time);
+        animation.sample(act_name);
+        let data = {
+            y:this.node.y,
+        };
+        animation.stop();
+        return data;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------------------------
     // 切换数据
     // param
     //     event_list_frame   帧事件列表
@@ -270,7 +216,207 @@ export default class reel_act extends cc.Component {
         }
 
         this.run_flag = true;
+        // -------------------------------------------------------------
+        this.reel_state = act_name;
+        // -------------------------------------------------------------
     }
+
+    // 滚轮 启动
+    reel_start_up(){
+        let param = {
+            act_name:"electric_gl_ys",
+            frame_start:0,
+            frame_end:42,
+            event_list_frame:[
+                {
+                    frame:42,
+                    call_func:()=>{
+                        this.reel_speed_normal();
+                    }
+                }
+            ],
+        };
+        this.transfer(param);
+    }
+    // 滚轮 中速
+    reel_speed_normal(){
+        let param = {
+            act_name:"electric_gl_ys",
+            frame_start:41,
+            frame_end:42,
+            is_loop:true,
+        };
+        this.transfer(param);
+    }
+    // 滚轮 高速
+    reel_speed_high(){
+        let param = {
+            act_name:"electric_gl_ks",
+            frame_start:42,
+            frame_end:43,
+            is_loop:true,
+        };
+        this.transfer(param);
+    }
+    // 滚轮 低速
+    reel_speed_low(){
+        let param = {
+            act_name:"electric_gl_ms",
+            frame_start:42,
+            frame_end:43,
+            is_loop:true,
+        };
+        this.transfer(param);
+    }
+    // 滚轮 中速
+    reel_stop_normal(obj?){
+        let param = {
+            act_name:"electric_gl_ys",
+            frame_start:42,
+            frame_end:77,
+            appoint_y:obj.end_y,
+            event_list_frame:[
+                {
+                    frame:77,
+                    call_func:()=>{
+                        obj.end_call && obj.end_call();
+                    }
+                }
+            ],
+        };
+        this.add_event_frame(param);
+        this.transfer(param);
+    }
+    // 滚轮 高速
+    reel_stop_high(obj){
+        let param = {
+            act_name:"electric_gl_ks",
+            frame_start:42,
+            frame_end:77,
+            appoint_y:obj.end_y,
+            event_list_frame:[
+                {
+                    frame:77,
+                    call_func:()=>{
+                        obj.end_call && obj.end_call();
+                    }
+                }
+            ],
+        };
+        this.add_event_frame(param);
+        this.transfer(param);
+    }
+    // 滚轮 低速
+    reel_stop_low(obj){
+        let param = {
+            act_name:"electric_gl_ms",
+            frame_start:42,
+            frame_end:121,
+            appoint_y:obj.end_y,
+            event_list_frame:[
+                {
+                    frame:121,
+                    call_func:()=>{
+                        obj.end_call && obj.end_call();
+                    }
+                }
+            ],
+        };
+        this.add_event_frame(param);
+        this.transfer(param);
+    }
+    // 添加帧事件
+    add_event_frame(param){
+        let act_name = param.act_name;
+        let stateData = slot.game.animStateData[act_name];
+        let step_time = stateData.step_time;
+        let events = stateData.events;
+        if(param.event_list_frame == null){
+            param.event_list_frame = [];
+        }
+        for (let index = 0; index < events.length; index++) {
+            const element = events[index];
+            let frame = Math.floor(element.frame/step_time);
+            param.event_list_frame.push({frame:frame, call_func_name:element.func})
+        }
+    }
+
+    // 滚轮 复活转
+    reel_resume_run(obj?){
+        let param = {
+            act_name:"electric_gl_ys",
+            frame_start:42,
+            frame_end:77,
+            appoint_y:obj.end_y,
+            event_list_frame:[
+                {
+                    frame:77,
+                    call_func:()=>{
+                        obj.end_call && obj.end_call();
+                    }
+                }
+            ],
+        };
+        this.add_event_frame(param);
+        this.transfer(param);
+    }
+    // -----------------------------------------------------------------------------------------------------------------------------------
+    // 对外接口
+    speed_up(){
+        this.is_stop = false;
+        this.event_open = true;
+        this.speed_state = 1;
+        this.reel_start_up();
+    }
+    speed_down(end_y?, end_call?){
+        this.stop_lock = true;
+        if(this.speed_state == 1){
+            this.reel_stop_normal({end_y:end_y, end_call:end_call});
+        }else if(this.speed_state == 2){
+            this.reel_stop_high({end_y:end_y, end_call:end_call});
+        }else if(this.speed_state == 3){
+            this.reel_stop_normal({end_y:end_y, end_call:end_call});
+        }else if(this.speed_state == 4){
+            this.reel_stop_low({end_y:end_y, end_call:end_call});
+        }else{
+            this.reel_stop_normal({end_y:end_y, end_call:end_call});
+        }
+    }
+
+    // 保持匀速
+    continue_reel(){
+        this.stop_lock = false;
+        if(this.act_state != act_state.speed_uniform){
+            this.reel_speed_normal();
+        }
+    }
+
+    // 增加速度
+    increaseReelSpeed(){
+        this.stop_lock = false;
+        this.speed_state = 2;
+        this.reel_speed_high();
+    }
+
+    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 特殊转动 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+    // 复活转 (转停 转停)
+    reelResumeRun(end_y, end_call){
+        this.stop_lock = false;
+        this.speed_state = 3;
+        this.reel_resume_run({end_y:end_y, end_call:end_call});
+    }
+
+    reelSlowSpeed(){
+        this.stop_lock = false;
+        this.speed_state = 4;
+        this.reel_speed_low();
+    }
+
+    speed_down_slow(end_y?, end_call?){
+        this.stop_lock = true;
+        this.reel_stop_low({end_y:end_y, end_call:end_call});
+    }
+    // ↑↑↑↑↑↑↑↑↑↑↑ 特殊转动 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
     // ----------------------------------------------------------------------------
     // 每帧刷新
@@ -362,170 +508,4 @@ export default class reel_act extends cc.Component {
         }
     }
     // ----------------------------------------------------------------------------
-
-
-    // 滚轮音效帧
-    event_reel_finish_pre(){
-        if(this.node.isValid == false){
-            return;
-        }
-        if(this.event_open == false){
-            return;
-        }
-
-        this.cb_reel_finish_pre && this.cb_reel_finish_pre();
-    }
-
-    // 滚轮停止
-    event_reel_finish(){
-        if(this.node.isValid == false){
-            return;
-        }
-        if(this.event_open == false){
-            return;
-        }
-        this.reel_state = 'none';
-        this.act_state = act_state.none;
-        this.is_stop = true;
-        this.cb_reel_finish && this.cb_reel_finish();
-    }
-
-    // 存储动作基本数据数据
-    init_data(){
-        if(slot.game.animStateDataIsInit){
-            return;
-        }
-        slot.game.animStateDataIsInit = true;
-
-        if(slot.game.animStateData){
-            return
-        }
-        let animation = this.node.getComponent(cc.Animation);
-        slot.game.animStateData = {};
-        let animStateData = slot.game.animStateData;
-        let clips = animation.getClips();
-        for (let index = 0; index < clips.length; index++) {
-            let clip = clips[index];
-            let animState = animation.getAnimationState(clip.name);
-            let frame_num = Math.ceil(clip.duration * clip.sample);
-            let step_time = clip.duration/frame_num;
-            let frame_obj = [];
-            // animState.play();
-            animation.getAnimationState(clip.name).play();
-            for (let index = 0; index <= frame_num; index++) {
-                let time = index*step_time;
-                animState.time = time;
-                // 采样
-                animation.sample(clip.name);
-                // 需要保存的数据
-                frame_obj.push(this.node.y);
-            }
-            animation.getAnimationState(clip.name).stop();
-            // animState.stop();
-            let obj = {
-                // values:this.copy_deep(animState.curves[0].values),
-                frame_obj:frame_obj,
-                step_time:step_time,
-                speed:animState.speed,
-                duration:clip.duration,
-                events:clip.events,
-                act_name:clip.name,
-            }
-            animStateData[clip.name] = obj;
-        }
-        // cc.log(animStateData);
-    }
-
-    // 采样
-    act_sample(act_name, time){
-        let animation = this.node.getComponent(cc.Animation);
-        animation.play(act_name, time);
-        animation.sample(act_name);
-        let data = {
-            y:this.node.y,
-        };
-        animation.stop();
-        return data;
-    }
-    speed_up(){
-        // if(this.act_state != act_state.none){
-
-        // }
-        this.event_open = true;
-        // this.stop_curr_act();
-        // this.speed_up_a();
-        this.reel_state = 'speed_up_a';
-    }
-    speed_down(end_y?, end_call?){
-        // if(this.speed_state == 1){
-        //     this.speed_down_a(end_y, end_call);
-        //     this.reel_state = 'speed_down_a';
-        // }else if(this.speed_state == 2){
-        //     this.speed_down_b(end_y, end_call);
-        //     this.reel_state = 'speed_down_b';
-        // }else if(this.speed_state == 3){
-        //     this.speed_down_a(end_y, end_call);
-        //     this.reel_state = 'speed_down_a';
-        // }else if(this.speed_state == 4){
-        //     // this.speed_down_c(end_y);
-        //     // this.reel_state = 'speed_down_c';
-        //     this.speed_down_a(end_y, end_call);
-        //     this.reel_state = 'speed_down_a';
-        // }else{
-        //     this.speed_down_b(end_y, end_call);
-        //     this.reel_state = 'speed_down_b';
-        // }
-
-
-    }
-
-    // 保持匀速
-    continue_reel(){
-        this.stop_lock = false;
-        this.is_stop = false;
-        if(this.act_state != act_state.speed_uniform){
-            // this.speed_uniform_a();
-            this.reel_state = 'speed_uniform_a';
-        }
-    }
-
-    // 增加速度
-    increaseReelSpeed(){
-        this.stop_lock = false;
-        this.is_stop = false;
-        this.speed_state = 2;
-        // this.stop_curr_act();
-        // this.speed_uniform_b();
-        this.reel_state = 'speed_uniform_b';
-    }
-
-    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 特殊转动 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-    // 复活转
-    reelResumeRun(end_y, end_call){
-        this.stop_lock = false;
-        this.is_stop = false;
-        this.speed_state = 3;
-        // this.speed_uniform_c();
-        // this.reel_state = 'speed_down_a';
-        // this.speed_down_d(end_y, end_call);
-        this.reel_state = 'speed_down_d';
-        // this.speed_down_b(end_y);
-    }
-
-    reelSlowSpeed(){
-        this.stop_lock = false;
-        this.is_stop = false;
-        this.speed_state = 4;
-        
-        // this.speed_uniform_c();
-        this.reel_state = 'speed_uniform_c';
-    }
-
-    speed_down_slow(end_y?, end_call?){
-        // this.stop_curr_act();
-        // this.speed_down_c(end_y, end_call);
-        this.reel_state = 'speed_down_c';
-    }
-    // ↑↑↑↑↑↑↑↑↑↑↑ 特殊转动 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
 }
